@@ -53,8 +53,8 @@ class SupercarUI(tk.Tk):
         # Configurations
 
         # Search Box
-        searchbox_label = tk.Label(self.main_frame, text="Search Box")
-        searchbox_label.grid(row=0, column=0)
+        search_box_label = tk.Label(self.main_frame, text="Search Box")
+        search_box_label.grid(row=0, column=0)
         self.search_box = tk.Entry(self.main_frame, width=25, textvariable=self.search)
         self.search_box.grid(row=1, column=0)
         search_button = tk.Button(self.main_frame, text="Search", command=self.controller.show_search_result)
@@ -63,19 +63,19 @@ class SupercarUI(tk.Tk):
         # Result list box
         result_label = tk.Label(self.main_frame, text="Results")
         result_label.grid(row=2, column=0)
-        self.result_box = tk.Listbox(self.main_frame, font=('Arial', 12))
+        self.result_box = tk.Listbox(self.main_frame, font=('Arial', 12), width=30)
+        self.result_box.bind("<<ListboxSelect>>", self.controller.on_car_select)
         self.result_box.grid(row=3, column=0)
 
-
         # Show spec button
-        show_spec_button = tk.Button(self.main_frame, text="Show specs")
-        show_spec_button.grid(row=4, column=0)
-        show_spec_button['state'] = tk.DISABLED
+        self.show_spec_button = tk.Button(self.main_frame, text="Show specs", command=self.controller.show_car_specs)
+        self.show_spec_button.grid(row=4, column=0)
+        self.show_spec_button['state'] = tk.DISABLED
 
         # Add to compare list button
-        add_com_button = tk.Button(self.main_frame, text="Add to compare list")
-        add_com_button.grid(row=4, column=1)
-        add_com_button['state'] = tk.DISABLED
+        self.add_com_button = tk.Button(self.main_frame, text="Add to compare list")
+        self.add_com_button.grid(row=4, column=1)
+        self.add_com_button['state'] = tk.DISABLED
 
         # Welcome Label
         main_label = tk.Label(self.main_frame, text="Welcome to the Main Window")
