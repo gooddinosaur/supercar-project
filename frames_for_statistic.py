@@ -49,17 +49,17 @@ class CorrelationFrame(tk.Frame):
         configurations = {'padx': 10, 'pady': 10}
 
         # Add combobox to select attribute
-        ttk.Label(self, text=f"Select Attribute1:").pack(side=tk.TOP,anchor='w', **configurations)
+        ttk.Label(self, text=f"Select Attribute1:").pack(side=tk.TOP,anchor='nw', **configurations)
         attribute_combo = ttk.Combobox(self, values=num_attributes)
-        attribute_combo.pack(side=tk.TOP,anchor='w', **configurations)
+        attribute_combo.pack(side=tk.TOP,anchor='nw', **configurations)
 
-        ttk.Label(self, text=f"Select Attribute2:").pack(side=tk.TOP,anchor='w', **configurations)
+        ttk.Label(self, text=f"Select Attribute2:").pack(side=tk.TOP,anchor='nw', **configurations)
         attribute2_combo = ttk.Combobox(self, values=num_attributes)
-        attribute2_combo.pack(side=tk.TOP,anchor='w', **configurations)
-        ttk.Button(self.ui.main_frame, text="Generate",
+        attribute2_combo.pack(side=tk.TOP,anchor='nw', **configurations)
+        ttk.Button(self, text="Generate",
                    command=lambda: self.controller.generate_correlation(
-                       attribute_combo.get(), attribute2_combo.get())).pack(side=tk.TOP,anchor='w',
+                       attribute_combo.get(), attribute2_combo.get())).pack(side=tk.LEFT,anchor='sw',
             **configurations)
-        ttk.Button(self.ui.main_frame, text="Back",
-                   command=self.ui.show_main_window).pack(side=tk.TOP,anchor='w',
+        ttk.Button(self, text="Back",
+                   command=self.ui.show_main_window).pack(side=tk.LEFT,anchor='sw',
                                                        **configurations)

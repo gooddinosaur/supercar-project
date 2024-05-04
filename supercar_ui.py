@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
-from search_result_frame import SearchResultsFrame
-from comparison_frame import ComparisonFrame
-from statistic_frame import StatisticFrame
+from frames_for_main_window import SearchResultsFrame, ComparisonFrame, StatisticFrame
+from frames_for_statistic import DistributionFrame, CorrelationFrame
 
 num_attributes = ['Year', 'Engine Size (L)',
                   'Horsepower', 'Torque (lb-ft)',
@@ -94,49 +93,12 @@ class SupercarUI(tk.Tk):
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
-
-        # Configurations
-        configurations = {'padx': 10, 'pady': 10}
-
-        # Add combobox to select attribute
-        ttk.Label(self.main_frame, text="Select Attribute:").pack(side=tk.LEFT, anchor='n', **configurations)
-        attribute_combo = ttk.Combobox(self.main_frame, values=num_attributes)
-        attribute_combo.pack(side=tk.LEFT, anchor='n', **configurations)
-
-        # Add button to generate distribution graph and back to main window button
-        ttk.Button(self.main_frame, text="Generate",
-                   command=lambda: self.controller.generate_distribution(
-                       attribute_combo.get())).pack(side=tk.LEFT, anchor='n',
-                                                    **configurations)
-        ttk.Button(self.main_frame, text="Back",
-                   command=self.show_main_window).pack(side=tk.RIGHT, anchor='n', **configurations)
+        distribution_interacter = DistributionFrame(self.main_frame, self, self.controller)
+        distribution_interacter.pack(side=tk.LEFT, anchor='n')
 
     def show_correlation_window(self):
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
-
-        # Configurations
-        configurations = {'padx': 10, 'pady': 10}
-
-        # Add combobox to select attribute
-        ttk.Label(self.main_frame, text=f"Select Attribute1:").pack(side=tk.LEFT, anchor='n', **configurations)
-        attribute_combo = ttk.Combobox(self.main_frame, values=num_attributes)
-        attribute_combo.pack(side=tk.LEFT, anchor='n', **configurations)
-
-        ttk.Label(self.main_frame, text=f"Select Attribute2:").pack(
-            side=tk.LEFT,
-            anchor='n',
-            **configurations)
-        attribute2_combo = ttk.Combobox(self.main_frame, values=num_attributes)
-        attribute2_combo.pack(side=tk.LEFT, anchor='n', **configurations)
-
-        ttk.Button(self.main_frame, text="Back",
-                   command=self.show_main_window).pack(side=tk.RIGHT,
-                                                       anchor='n',
-                                                       **configurations)
-        ttk.Button(self.main_frame, text="Generate",
-                   command=lambda: self.controller.generate_correlation(
-                       attribute_combo.get(), attribute2_combo.get())).pack(side=tk.LEFT, anchor='n',
-                                                    **configurations)
-
+        correlation_interacter = CorrelationFrame(self.main_frame, self, self.controller)
+        correlation_interacter.pack(side=tk.LEFT, anchor='n')

@@ -75,7 +75,7 @@ class SupercarController:
         # Embed histogram in frame
         canvas = FigureCanvasTkAgg(fig, master=self.ui.main_frame)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM, anchor='s',padx=10, pady=10, fill=tk.BOTH, expand=True)
+        canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n',padx=10, pady=10, fill=tk.BOTH, expand=True)
 
     def generate_correlation(self, attribute1, attribute2):
         for widget in self.ui.main_frame.winfo_children():
@@ -87,7 +87,7 @@ class SupercarController:
         # Embed histogram in frame
         canvas = FigureCanvasTkAgg(fig, master=self.ui.main_frame)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM, anchor='s', padx=10,
+        canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n', padx=10,
                                     pady=10, fill=tk.BOTH, expand=True)
 
 

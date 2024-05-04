@@ -62,9 +62,9 @@ class SupercarModel:
     def correlation_plotter(self, attribute1, attribute2):
         data1 = self.get_info_for_statistic(attribute1)
         data2 = self.get_info_for_statistic(attribute2)
-
+        correlation_coefficient = np.corrcoef(data1, data2)[0, 1]
         # Create a new Figure
-        fig = Figure(figsize=(8, 6), dpi=100)
+        fig = Figure(figsize=(5, 3), dpi=100)
 
         # Add a subplot to the Figure
         ax = fig.add_subplot(111)
@@ -76,4 +76,8 @@ class SupercarModel:
         ax.set_title(f'Correlation Plot: {attribute1} vs {attribute2}')
         ax.set_xlabel(attribute1)
         ax.set_ylabel(attribute2)
+        ax.text(0.05, 0.95,
+                f'Correlation Coefficient: {correlation_coefficient:.2f}',
+                verticalalignment='top', horizontalalignment='left',
+                transform=ax.transAxes, fontsize=12, color='green')
         return fig
