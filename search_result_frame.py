@@ -6,7 +6,9 @@ class SearchResultsFrame(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         self.search = tk.StringVar()
         self.controller = controller
+        self.init_components()
 
+    def init_components(self) -> None:
         # Search label
         search_label = tk.Label(self, text="Search Box")
         search_label.grid(row=0, column=0, sticky="w", padx=10, pady=5)
