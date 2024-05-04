@@ -20,8 +20,8 @@ class SearchResultsFrame(tk.Frame):
         self.search_box.bind("<KeyRelease>", self.on_search_key_release)
 
         # Result label
-        result_label = tk.Label(self, text="Results")
-        result_label.grid(row=2, column=0, sticky="w", padx=10, pady=5)
+        self.result_label = tk.Label(self, text="Result: (0 results)")
+        self.result_label.grid(row=2, column=0, sticky="w", padx=10, pady=5)
 
         # Result box
         self.result_box = tk.Listbox(self, font=('Arial', 12), width=30,
@@ -29,6 +29,12 @@ class SearchResultsFrame(tk.Frame):
         self.result_box.bind("<<ListboxSelect>>",
                              self.controller.on_car_select)
         self.result_box.grid(row=3, column=0, padx=10, pady=5)
+
+        # Scrollbar for the result box
+        scrollbar = tk.Scrollbar(self, orient="vertical",
+                                 command=self.result_box.yview)
+        scrollbar.grid(row=3, column=1, sticky='ns', pady=5)
+        self.result_box.config(yscrollcommand=scrollbar.set)
 
         # Show spec button
         self.show_spec_button = tk.Button(self, text="Show specs",
@@ -38,7 +44,7 @@ class SearchResultsFrame(tk.Frame):
         self.show_spec_button['state'] = tk.DISABLED
 
         # Add to compare list button
-        self.add_com_button = tk.Button(self, text="Add to compare list")
+        self.add_com_button = tk.Button(self, text="Add to compare list",command=self.controller.add_to_compare_list)
         self.add_com_button.grid(row=4, column=0, padx=(80, 0), pady=5)
         self.add_com_button['state'] = tk.DISABLED
 
@@ -75,8 +81,8 @@ class ComparisonFrame(tk.Frame):
         compare_lable = tk.Label(self, text="Comparison box",
                                  font=("Helvetica", 12))
         compare_lable.pack(side=tk.TOP, anchor="w")
-        compare_box = tk.Listbox(self, font=('Arial', 12), width=40, height=10)
-        compare_box.pack(side=tk.TOP)
+        self.compare_box = tk.Listbox(self, font=('Arial', 12), width=40, height=12)
+        self.compare_box.pack(side=tk.TOP)
 
         # Button for interact with comparison box
         interact_buttons = InteractButton(self, self.controller)
@@ -86,6 +92,9 @@ class ComparisonFrame(tk.Frame):
         back_button = tk.Button(self, text="Back to Main Menu",
                                 command=self.ui.show_startup_window)
         back_button.pack(side=tk.BOTTOM, pady=(10, 0))
+
+    def add_to_compare(self, car):
+        self.compare_box.insert(tk.END, car)
 
 
 class InteractButton(tk.Frame):
@@ -101,10 +110,10 @@ class InteractButton(tk.Frame):
         compare_button = tk.Button(self, text="Compare")
         compare_button.pack(**configurations)
 
-        clear_button = tk.Button(self, text="Clear")
+        clear_button = tk.Button(self, text="Clear", command=self.controller.clear_comparison)
         clear_button.pack(**configurations)
 
-        remove_button = tk.Button(self, text="Remove")
+        remove_button = tk.Button(self, text="Remove", command=self.controller.remove_selected)
         remove_button.pack(**configurations)
 
 

@@ -18,11 +18,18 @@ class SupercarController:
         search_text = self.ui.search_results_frame.search.get()
         if not search_text:
             self.ui.search_results_frame.result_box.delete(0, tk.END)
+            self.ui.search_results_frame.result_label.config(
+                text=f"Results: (0 results)")
             return
         result = self.model.get_search_result(search_text)
         self.ui.search_results_frame.result_box.delete(0, tk.END)
         for car in result:
             self.ui.search_results_frame.result_box.insert(tk.END, f"{car['Car Make']} - {car['Car Model']}")
+        if len(result)==1:
+            self.ui.search_results_frame.result_label.config(
+                text=f"Results: (1 result)")
+        else:
+            self.ui.search_results_frame.result_label.config(text=f"Result: ({len(result)} results)")
 
     def on_car_select(self, event):
         # Get the selected car from the result box
@@ -49,6 +56,19 @@ class SupercarController:
             for key, value in selected_car_info.items():
                 label = tk.Label(car_specs_frame, text=f"{key}: {value}")
                 label.pack()
+
+    def add_to_compare_list(self):
+        selected_index = self.ui.search_results_frame.result_box.curselection()
+        if selected_index:
+            selected_car = self.ui.search_results_frame.result_box.get(selected_index)
+            self.ui.comparison_frame.add_to_compare(selected_car)
+
+    def clear_comparison(self):
+        self.ui.comparison_frame.compare_box.delete(0, tk.END)
+
+    def remove_selected(self):
+        selected_indices = self.ui.comparison_frame.compare_box.curselection()
+        self.ui.comparison_frame.compare_box.delete(selected_indices)
 
     def show_descriptive(self):
         data = self.model.get_descriptive_statistics()
@@ -78,6 +98,9 @@ class SupercarController:
         canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n',padx=10, pady=10, fill=tk.BOTH, expand=True)
 
     def generate_correlation(self, attribute1, attribute2):
+        if not attribute1 or not attribute2:
+            messagebox.showerror("Error", "Please select 2 attributes")
+            return
         for widget in self.ui.main_frame.winfo_children():
             if isinstance(widget, tk.Canvas):
                 widget.destroy()

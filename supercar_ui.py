@@ -21,7 +21,7 @@ class SupercarUI(tk.Tk):
     def init_main_window(self):
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True)
-        self.minsize(1000, 500)
+        self.minsize(1000, 510)
         self.show_startup_window()
 
     def show_startup_window(self):
@@ -31,7 +31,7 @@ class SupercarUI(tk.Tk):
 
         # New frame for showing pictures
         picture_frame = tk.Frame(self.main_frame, width=200)
-        picture_frame.pack(side="left", fill="y")
+        picture_frame.pack(side="left", fill="both", expand=True)
 
         # Import and display picture
         image = Image.open("Images/startup_image.jpg")
@@ -40,7 +40,7 @@ class SupercarUI(tk.Tk):
 
         picture_label = tk.Label(picture_frame, image=photo)
         picture_label.image = photo
-        picture_label.pack(pady=10)
+        picture_label.pack(pady=10, expand=True)
 
         configurations = {'pady': 10}
         startup_label = tk.Label(self.main_frame, text="Supercar choosing helper and analysis", font=("Helvetica", 12))
@@ -59,18 +59,18 @@ class SupercarUI(tk.Tk):
 
         # Left side frame
         self.search_results_frame = SearchResultsFrame(self.main_frame, self.controller)
-        self.search_results_frame.pack(side=tk.LEFT, padx=10, pady=10)
+        self.search_results_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
 
         # Middle frame
         self.comparison_frame = ComparisonFrame(self.main_frame, self, self.controller)
-        self.comparison_frame.pack(side=tk.LEFT, padx=10, pady=10)
+        self.comparison_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
 
         # Right frame
         self.statistic_frame = StatisticFrame(self.main_frame, self.controller)
-        self.statistic_frame.pack(side=tk.LEFT, padx=10, pady=10)
+        self.statistic_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
 
         self.histogram_frame = tk.Frame(self.main_frame)
-        self.histogram_frame.pack(side=tk.LEFT, padx=10, pady=10)
+        self.histogram_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
 
     def quit_program(self):
         self.destroy()
