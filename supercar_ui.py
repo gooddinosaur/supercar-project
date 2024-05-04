@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
-
+from search_result_frame import SearchResultsFrame
 
 class SupercarUI(tk.Tk):
     def __init__(self, controller):
@@ -51,32 +51,9 @@ class SupercarUI(tk.Tk):
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True)
 
-        # Configurations
-        configurations = {'padx': 10}
-
-        # Search Box
-        search_box_label = tk.Label(self.main_frame, text="Search Box")
-        search_box_label.grid(row=0, column=0, sticky="w", **configurations)
-        self.search_box = tk.Entry(self.main_frame, width=45, textvariable=self.search)
-        self.search_box.grid(row=1, column=0, **configurations)
-        self.search_box.bind("<KeyRelease>", self.on_search_key_release)
-
-        # Result list box
-        result_label = tk.Label(self.main_frame, text="Results")
-        result_label.grid(row=2, column=0, sticky="w", **configurations)
-        self.result_box = tk.Listbox(self.main_frame, font=('Arial', 12), width=30, height=18)
-        self.result_box.bind("<<ListboxSelect>>", self.controller.on_car_select)
-        self.result_box.grid(row=3, column=0, **configurations)
-
-        # Show spec button
-        self.show_spec_button = tk.Button(self.main_frame, text="Show specs", command=self.controller.show_car_specs)
-        self.show_spec_button.grid(row=4, column=0, sticky="w", padx=30, pady=20)
-        self.show_spec_button['state'] = tk.DISABLED
-
-        # Add to compare list button
-        self.add_com_button = tk.Button(self.main_frame, text="Add to compare list")
-        self.add_com_button.grid(row=4, column=0, padx=(80,0), pady=20)
-        self.add_com_button['state'] = tk.DISABLED
+        # Left side frame
+        self.search_results_frame = SearchResultsFrame(self.main_frame, self.controller)
+        self.search_results_frame.grid(row=0, column=0, padx=10, pady=10)
 
         # Welcome Label
         main_label = tk.Label(self.main_frame, text="Supercar choosing helper and analysis", font=("Helvetica", 16))
@@ -97,7 +74,7 @@ class SupercarUI(tk.Tk):
         row_index = 0
         for button_text, button_command in analysis_buttons.items():
             button = tk.Button(self.main_frame, text=button_text, command=button_command)
-            button.grid(row=row_index, column=3, sticky='e', **configurations)
+            button.grid(row=row_index, column=3, sticky='e')
             row_index += 1
 
         # Decoration pictures
@@ -123,11 +100,11 @@ class SupercarUI(tk.Tk):
 
     def show_statistic_window(self):
         pass
+
     def show_distribution_window(self):
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
-
 
         # Configurations
         configurations = {'padx': 10, 'pady': 10}
@@ -149,3 +126,4 @@ class SupercarUI(tk.Tk):
 
     def show_time_series__window(self):
         pass
+
