@@ -49,12 +49,13 @@ class UpperPart(tk.Frame):
             picture_label.image = photo
             picture_label.pack(side=tk.TOP)
 
-        buttons = [{'Name': 'Descriptive statistic', 'row': 1, 'column': 0, 'command': ''},
+        buttons = [{'Name': 'Descriptive statistic', 'row': 1, 'column': 0, 'command': self.controller.show_descriptive},
                     {'Name': 'Distribution', 'row': 1, 'column': 1, 'command': self.controller.show_distribution},
-                    {'Name': 'Correlation', 'row': 3, 'column': 0, 'command': 'self.controller.'},
+                    {'Name': 'Correlation', 'row': 3, 'column': 0, 'command': self.controller.show_correlation},
                     {'Name': 'Part-to-whole', 'row': 3, 'column': 1, 'command': ''}]
         for button_info in buttons:
             button = tk.Button(self, text=button_info['Name'], command=button_info['command'])
             button.grid(row=button_info['row'], column=button_info['column'], **configurations)
+
 
 

@@ -1,9 +1,10 @@
 from supercar_ui import SupercarUI
-from supercar_model import SupercarModel
 import tkinter as tk
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 from tkinter import ttk
+from tkinter import messagebox
 
 
 class SupercarController:
@@ -49,60 +50,46 @@ class SupercarController:
                 label = tk.Label(car_specs_frame, text=f"{key}: {value}")
                 label.pack()
 
+    def show_descriptive(self):
+        data = self.model.get_descriptive_statistics()
+        self.ui.show_descriptive_window(data)
+
     def show_distribution(self):
-        # Clear previous content
-        for widget in self.ui.main_frame.winfo_children():
-            widget.destroy()
+        self.ui.show_distribution_window()
 
-        # Configurations
-        configurations = {'padx': 10, 'pady': 10}
-
-        # Add combobox to select attribute
-        ttk.Label(self.ui.main_frame, text="Select Attribute:").grid(row=0,
-                                                                     column=0,
-                                                                     **configurations)
-        attribute_combo = ttk.Combobox(self.ui.main_frame,
-                                       values=['Year', 'Engine Size (L)',
-                                               'Horsepower', 'Torque (lb-ft)',
-                                               '0-60 MPH Time (seconds)',
-                                               'Price (in USD)'])
-        attribute_combo.grid(row=0, column=1, **configurations)
-
-        # Add button to generate distribution graph
-        ttk.Button(self.ui.main_frame, text="Generate",
-                   command=lambda: self.generate_distribution(
-                       attribute_combo.get())).grid(row=1, column=0,
-                                                    columnspan=2,
-                                                    **configurations)
-        ttk.Button(self.ui.main_frame, text="Back",
-                   command=self.ui.show_main_window).grid(row=2, column=0,
-                                                          columnspan=2,
-                                                          **configurations)
+    def show_correlation(self):
+        self.ui.show_correlation_window()
 
     def generate_descriptive_statistic(self, attribute):
         pass
 
     def generate_distribution(self, attribute):
-        data = []
-        for car in self.model.data:
-            try:
-                if attribute == 'Price (in USD)':
-                    value = eval(car[attribute].replace(',', ''))
-                else:
-                    value = float(car[attribute])
-                data.append(value)
-            except (ValueError, TypeError):
-                pass
-
+        if not attribute:
+            messagebox.showerror("Error", "Please select attribute")
+            return
+        for widget in self.ui.main_frame.winfo_children():
+            if isinstance(widget, tk.Canvas):
+                widget.destroy()
         # Create a histogram
-        plt.hist(data)
-        plt.title(f'Distribution - Histogram of {attribute}')
-        plt.xlabel(attribute)
-        plt.ylabel('Frequency')
-        plt.show()
+        fig = self.model.distribution_histogram_plotter(attribute)
+        # Embed histogram in frame
+        canvas = FigureCanvasTkAgg(fig, master=self.ui.main_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.BOTTOM, anchor='s',padx=10, pady=10, fill=tk.BOTH, expand=True)
 
-    def generate_correlation(self, attribute):
-        pass
+    def generate_correlation(self, attribute1, attribute2):
+        for widget in self.ui.main_frame.winfo_children():
+            if isinstance(widget, tk.Canvas):
+                widget.destroy()
+
+        # Create scatter
+        fig = self.model.correlation_plotter(attribute1, attribute2)
+        # Embed histogram in frame
+        canvas = FigureCanvasTkAgg(fig, master=self.ui.main_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.BOTTOM, anchor='s', padx=10,
+                                    pady=10, fill=tk.BOTH, expand=True)
+
 
     def generate_part_to_whole(self, attribute):
         pass

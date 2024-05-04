@@ -37,7 +37,7 @@ class ComparisonFrame(tk.Frame):
 
         # Back to Main Menu Button
         back_button = tk.Button(self, text="Back to Main Menu", command=self.ui.show_startup_window)
-        back_button.pack(side=tk.BOTTOM)
+        back_button.pack(side=tk.BOTTOM, pady=(10, 0))
 
 
 class InteractButton(tk.Frame):
