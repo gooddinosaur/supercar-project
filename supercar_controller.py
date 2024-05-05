@@ -1,8 +1,6 @@
 from supercar_ui import SupercarUI
 import tkinter as tk
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import numpy as np
 from tkinter import ttk
 from tkinter import messagebox
 

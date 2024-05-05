@@ -64,7 +64,7 @@ class ComparisonFrame(tk.Frame):
         picture_frame = tk.Frame(self, width=200)
         picture_frame.pack(side=tk.TOP)
         image = Image.open("Images/logo.png")
-        image = image.resize((133, 120), Image.LANCZOS)
+        image = image.resize((133, 130), Image.LANCZOS)
         photo = ImageTk.PhotoImage(image)
 
         picture_label = tk.Label(picture_frame, image=photo)

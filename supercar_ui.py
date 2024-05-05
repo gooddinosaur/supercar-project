@@ -2,12 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
 from frames_for_main_window import SearchResultsFrame, ComparisonFrame, StatisticFrame
-from frames_for_statistic import DistributionFrame, CorrelationFrame
-
-num_attributes = ['Year', 'Engine Size (L)',
-                  'Horsepower', 'Torque (lb-ft)',
-                  '0-60 MPH Time (seconds)',
-                  'Price (in USD)']
+from frames_for_statistic import DistributionFrame, CorrelationFrame, DescriptiveFrame
 
 
 class SupercarUI(tk.Tk):
@@ -21,7 +16,7 @@ class SupercarUI(tk.Tk):
     def init_main_window(self):
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True)
-        self.minsize(1000, 510)
+        self.minsize(1000, 525)
         self.show_startup_window()
 
     def show_startup_window(self):
@@ -79,15 +74,22 @@ class SupercarUI(tk.Tk):
         self.mainloop()
 
     def show_descriptive_window(self, datas):
+        # Clear previous content
         configurations = {'padx': 10, 'pady': 10}
         for widget in self.main_frame.winfo_children():
             widget.destroy()
-        ttk.Label(self.main_frame, text="Descriptive Statistics").pack(side=tk.LEFT, anchor='n', **configurations)
+        ttk.Label(self.main_frame, text="Descriptive Statistics of all attributes:").grid(row=0, column=0, sticky='w', **configurations)
         ttk.Button(self.main_frame, text="Back",
-                   command=self.show_main_window).pack(side=tk.RIGHT,
-                                                       anchor='n',
-                                                       **configurations)
-        print(datas)
+                   command=self.show_main_window).grid(row=0, column=4, sticky='e', **configurations)
+        col = 0
+        r = 2
+        for data in datas:
+            if col == 3:
+                r += 1
+                col = 0
+            frame = DescriptiveFrame(self.main_frame, data)
+            frame.grid(row=r, column=col, padx=10, pady=10)
+            col += 1
 
     def show_distribution_window(self):
         # Clear previous content
