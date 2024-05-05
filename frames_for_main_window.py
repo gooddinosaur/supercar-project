@@ -175,7 +175,7 @@ class UpperPart(tk.Frame):
                    {'Name': 'Correlation', 'row': 3, 'column': 0,
                     'command': self.controller.show_correlation},
                    {'Name': 'Part-to-whole', 'row': 3, 'column': 1,
-                    'command': ''}]
+                    'command': self.controller.show_part_to_whole}]
         for button_info in buttons:
             button = tk.Button(self, text=button_info['Name'],
                                command=button_info['command'])

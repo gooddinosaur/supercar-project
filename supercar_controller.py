@@ -78,8 +78,8 @@ class SupercarController:
     def show_correlation(self):
         self.ui.show_correlation_window()
 
-    def generate_descriptive_statistic(self, attribute):
-        pass
+    def show_part_to_whole(self):
+        self.ui.show_part_to_whole_window()
 
     def generate_distribution(self, attribute):
         if not attribute:
@@ -111,9 +111,16 @@ class SupercarController:
         canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n', padx=10,
                                     pady=10, fill=tk.BOTH, expand=True)
 
-
-    def generate_part_to_whole(self, attribute):
-        pass
+    def generate_part_to_whole(self):
+        data = self.model.get_info_for_part_to_whole()
+        print(data)
+        # Pie chart
+        fig = self.model.part_to_whole_plotter(data)
+        # Embed histogram in frame
+        canvas = FigureCanvasTkAgg(fig, master=self.ui.main_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n', padx=10,
+                                    pady=10, fill=tk.BOTH, expand=True)
 
     def generate_time_series(self, attribute):
         pass

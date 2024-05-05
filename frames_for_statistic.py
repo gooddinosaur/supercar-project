@@ -59,8 +59,7 @@ class CorrelationFrame(tk.Frame):
                        attribute_combo.get(), attribute2_combo.get())).pack(side=tk.LEFT,anchor='sw',
             **configurations)
         ttk.Button(self, text="Back",
-                   command=self.ui.show_main_window).pack(side=tk.LEFT,anchor='sw',
-                                                       **configurations)
+                   command=self.ui.show_main_window).pack(side=tk.LEFT,anchor='sw',**configurations)
 
 
 class DescriptiveFrame(tk.Frame):
@@ -76,4 +75,4 @@ class DescriptiveFrame(tk.Frame):
         ttk.Label(self, text=self.data['attribute'].capitalize(), font=("TkDefaultFont", 14, "underline")).pack(side=tk.TOP, **configurations)
         self.data.pop('attribute')
         for keys, values in self.data.items():
-            ttk.Label(self, text=f"{keys}: {values}", font=("TkDefaultFont", 11)).pack(side=tk.TOP, **configurations)
+            ttk.Label(self, text=f"{keys.capitalize()}: {values}", font=("TkDefaultFont", 11)).pack(side=tk.TOP, **configurations)

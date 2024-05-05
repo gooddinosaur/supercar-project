@@ -104,3 +104,12 @@ class SupercarUI(tk.Tk):
             widget.destroy()
         correlation_interacter = CorrelationFrame(self.main_frame, self, self.controller)
         correlation_interacter.pack(side=tk.LEFT, anchor='n')
+
+    def show_part_to_whole_window(self):
+        # Clear previous content
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+        configurations = {'padx': 10, 'pady': 10}
+        ttk.Label(self.main_frame, text="Part-to-whole:").pack(side=tk.LEFT, anchor='n', **configurations)
+        ttk.Button(self.main_frame, text="Back", command=self.show_main_window).pack(side=tk.TOP, anchor='ne', **configurations)
+        self.controller.generate_part_to_whole()

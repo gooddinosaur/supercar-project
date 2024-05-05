@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib.figure import Figure
-
+import matplotlib.pyplot as plt
 
 class SupercarModel:
 
@@ -35,6 +35,14 @@ class SupercarModel:
                 }
                 statistics_list.append(statistics_dict)
         return statistics_list
+
+    def get_info_for_part_to_whole(self):
+        info = {}
+        for entry in self.data:
+            car_make = entry['Car Make']
+            info[car_make] = info.get(car_make, 0) + 1
+        return info
+
 
     def get_info_for_statistic(self, attribute):
         data = []
@@ -79,4 +87,21 @@ class SupercarModel:
                 f'Correlation Coefficient: {correlation_coefficient:.2f}',
                 verticalalignment='top', horizontalalignment='left',
                 transform=ax.transAxes, fontsize=12, color='green')
+        return fig
+
+
+    def part_to_whole_plotter(self, data):
+        labels = data.keys()
+        sizes = data.values()
+        # Create a new Figure
+        fig = plt.figure(figsize=(5, 3), dpi=100)
+        # Add a subplot to the Figure
+        ax = fig.add_subplot(111)
+        # Create pie chart
+        ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+        ax.axis(
+            'equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+        # Set title
+        ax.set_title('Part-to-Whole Relationship')
         return fig
