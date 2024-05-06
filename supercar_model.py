@@ -67,6 +67,34 @@ class SupercarModel:
             data.append(value)
         return data
 
+    def comparison_plotter(self, car1, car2):
+        attributes = ['Engine Size (L)', 'Horsepower', 'Torque (lb-ft)',
+                      '0-60 MPH Time (seconds)', 'Price (in USD)']
+        if car1['Price (in USD)'] < car2['Price (in USD)']:
+            car1, car2 = car2, car1
+
+        num_attributes = len(attributes)
+        attribute_indices = np.arange(num_attributes)  # Index values for the bars
+        bar_width = 0.35  # Width of the bars
+
+        # Plotting
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+        car1_values = [car1[attr] for attr in attributes]
+        car2_values = [car2[attr] for attr in attributes]
+
+        ax.bar(attribute_indices - bar_width / 2, car1_values, bar_width, label=car1['Car Make'])
+        ax.bar(attribute_indices + bar_width / 2, car2_values, bar_width, label=car2['Car Make'])
+
+        # Add labels and legend
+        ax.set_xlabel('Attributes')
+        ax.set_ylabel('Values')
+        ax.set_title('Comparison of Selected Cars')
+        ax.set_xticks(attribute_indices)
+        ax.set_xticklabels(attributes)
+        ax.legend()
+        return fig
+
     def distribution_histogram_plotter(self, attribute):
         fig = Figure(figsize=(1, 4), dpi=100)
         ax = fig.add_subplot(111)
@@ -98,7 +126,6 @@ class SupercarModel:
                 verticalalignment='top', horizontalalignment='left',
                 transform=ax.transAxes, fontsize=12, color='green')
         return fig
-
 
     def part_to_whole_plotter(self, data):
         labels = data.keys()

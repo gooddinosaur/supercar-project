@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
 from frames_for_main_window import SearchResultsFrame, ComparisonFrame, StatisticFrame
-from frames_for_statistic import DistributionFrame, CorrelationFrame, DescriptiveFrame
+from frames_for_statistic import DistributionFrame, CorrelationFrame, DescriptiveFrame, TimeSeriesFrame
 
 
 class SupercarUI(tk.Tk):
@@ -122,7 +122,10 @@ class SupercarUI(tk.Tk):
         ttk.Button(self.main_frame, text="Back", command=self.show_main_window).pack(side=tk.TOP, anchor='ne', **configurations)
         self.controller.generate_part_to_whole()
 
-# for r in range(len(self.keynames) // columns):
-#     self.grid_rowconfigure(r, weight=1)
-# for c in range(columns):
-#     self.grid_columnconfigure(c, weight=1)
+    def show_time_series_window(self):
+        # Clear previous content
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+        time_series_interacter = TimeSeriesFrame(self.main_frame, self,
+                                                    self.controller)
+        time_series_interacter.pack(side=tk.LEFT, anchor='n')

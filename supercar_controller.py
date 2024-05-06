@@ -3,7 +3,8 @@ import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import ttk
 from tkinter import messagebox
-
+import matplotlib.pyplot as plt
+from tkinter import Toplevel
 
 class SupercarController:
     """Controller class for the calculator application."""
@@ -58,8 +59,35 @@ class SupercarController:
     def add_to_compare_list(self):
         selected_index = self.ui.search_results_frame.result_box.curselection()
         if selected_index:
+            if self.ui.comparison_frame.compare_box.size() == 2:
+                messagebox.showerror("Error", "You can select at most 2 cars in compare box.")
+                return
             selected_car = self.ui.search_results_frame.result_box.get(selected_index)
             self.ui.comparison_frame.add_to_compare(selected_car)
+
+    def generate_comparison(self):
+        if self.ui.comparison_frame.compare_box.size() != 2:
+            messagebox.showerror("Error","Please select 2 cars to continue comparing.")
+            return
+        car1 = self.ui.comparison_frame.compare_box.get(0)
+        car2 = self.ui.comparison_frame.compare_box.get(1)
+
+        # Retrieve data for the selected cars from the model
+        car1_data = self.model.car_getter(car1)
+        car2_data = self.model.car_getter(car2)
+        # Extract attributes for comparison
+        fig = self.model.comparison_plotter(car1_data, car2_data)
+        comparison_window = tk.Tk()
+        comparison_window.title('Comparison Graph')
+        comparison_window.geometry('800x600')
+
+        # Embed the plot in the new window
+        canvas = FigureCanvasTkAgg(fig, master=comparison_window)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        plt.close()
+        comparison_window.mainloop()
+        return
 
     def clear_comparison(self):
         self.ui.comparison_frame.compare_box.delete(0, tk.END)
@@ -80,6 +108,9 @@ class SupercarController:
 
     def show_part_to_whole(self):
         self.ui.show_part_to_whole_window()
+
+    def show_time_series(self):
+        self.ui.show_time_series_window()
 
     def generate_distribution(self, attribute):
         if not attribute:
@@ -113,7 +144,6 @@ class SupercarController:
 
     def generate_part_to_whole(self):
         data = self.model.get_info_for_part_to_whole()
-        print(data)
         # Pie chart
         fig = self.model.part_to_whole_plotter(data)
         # Embed histogram in frame

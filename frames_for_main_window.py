@@ -1,5 +1,6 @@
 import tkinter as tk
 from PIL import ImageTk, Image
+from tkinter import ttk
 
 
 class SearchResultsFrame(tk.Frame):
@@ -87,12 +88,18 @@ class ComparisonFrame(tk.Frame):
         compare_lable = tk.Label(self, text="Comparison box",
                                  font=("Helvetica", 12))
         compare_lable.pack(side=tk.TOP, anchor="w")
-        self.compare_box = tk.Listbox(self, font=('Arial', 12), width=40, height=12)
+        self.compare_box = tk.Listbox(self, font=('Arial', 12), width=40, height=2)
         self.compare_box.pack(side=tk.TOP)
 
         # Button for interact with comparison box
         interact_buttons = InteractButton(self, self.controller)
         interact_buttons.pack(side=tk.TOP)
+
+        # Compare results
+        compare_result = tk.Label(self, text="Comparison result:", font=("Helvetica", 12))
+        compare_result.pack(side=tk.TOP, anchor="w")
+        result_box = CompareResultFrame(self, self.controller)
+        result_box.pack(side=tk.TOP, anchor='w')
 
         # Back to Main Menu Button
         back_button = tk.Button(self, text="Back to Main Menu",
@@ -113,7 +120,7 @@ class InteractButton(tk.Frame):
         configurations = {'side': tk.LEFT, 'padx': 5, 'pady': 10, 'fill': tk.BOTH, 'expand': True}
 
         # Button for interact with comparison box
-        compare_button = tk.Button(self, text="Compare")
+        compare_button = tk.Button(self, text="Compare", command=self.controller.generate_comparison)
         compare_button.pack(**configurations)
 
         clear_button = tk.Button(self, text="Clear", command=self.controller.clear_comparison)
@@ -142,7 +149,7 @@ class StatisticFrame(tk.Frame):
         picture_label = tk.Label(picture_frame, image=photo)
         picture_label.image = photo
         picture_label.pack(side=tk.TOP)
-        button = tk.Button(self, text='Time series')
+        button = tk.Button(self, text='Time series', command=self.controller.show_time_series)
         button.pack(side=tk.TOP, padx=10, pady=10)
 
 
@@ -187,3 +194,19 @@ class UpperPart(tk.Frame):
                                command=button_info['command'])
             button.grid(row=button_info['row'], column=button_info['column'],
                         **configurations)
+
+
+class CompareResultFrame(tk.Frame):
+    def __init__(self, parent, data, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        self.data = data
+        self.init_components()
+
+    def init_components(self):
+        # Configurations
+        configurations = {'padx': 10, 'pady': 3}
+        self.config(borderwidth=4, relief="groove", width=6000, height=3500)
+        for i in range(6):
+            ttk.Label(self, text='testgggggggggggggggggggggggg', font=("TkDefaultFont", 10, "underline")).pack(side=tk.TOP, **configurations)
+
+
