@@ -10,25 +10,31 @@ class SearchResultsFrame(tk.Frame):
         self.init_components()
 
     def init_components(self) -> None:
+        # Configure row and column weights for expansion
+        for row in range(5):
+            self.grid_rowconfigure(row, weight=1)
+        for col in range(2):
+            self.grid_columnconfigure(col, weight=1)
+
         # Search label
         search_label = tk.Label(self, text="Search Box")
         search_label.grid(row=0, column=0, sticky="w", padx=10, pady=5)
 
         # Search box
         self.search_box = tk.Entry(self, width=45, textvariable=self.search)
-        self.search_box.grid(row=1, column=0, padx=10, pady=5)
+        self.search_box.grid(row=1, column=0, sticky='nw', padx=10, pady=5)
         self.search_box.bind("<KeyRelease>", self.on_search_key_release)
 
         # Result label
         self.result_label = tk.Label(self, text="Result: (0 results)")
-        self.result_label.grid(row=2, column=0, sticky="w", padx=10, pady=5)
+        self.result_label.grid(row=2, column=0, sticky="nw", padx=10, pady=5)
 
         # Result box
         self.result_box = tk.Listbox(self, font=('Arial', 12), width=30,
                                      height=18)
         self.result_box.bind("<<ListboxSelect>>",
                              self.controller.on_car_select)
-        self.result_box.grid(row=3, column=0, padx=10, pady=5)
+        self.result_box.grid(row=3, column=0, sticky='nw', padx=10, pady=5)
 
         # Scrollbar for the result box
         scrollbar = tk.Scrollbar(self, orient="vertical",
@@ -104,7 +110,7 @@ class InteractButton(tk.Frame):
         self.init_components()
 
     def init_components(self) -> None:
-        configurations = {'side': tk.LEFT, 'padx': 5, 'pady': 10}
+        configurations = {'side': tk.LEFT, 'padx': 5, 'pady': 10, 'fill': tk.BOTH, 'expand': True}
 
         # Button for interact with comparison box
         compare_button = tk.Button(self, text="Compare")

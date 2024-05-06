@@ -30,42 +30,50 @@ class SupercarUI(tk.Tk):
 
         # Import and display picture
         image = Image.open("Images/startup_image.jpg")
-        image = image.resize((772, 454), Image.LANCZOS)
+        image = image.resize((800, 454), Image.LANCZOS)
         photo = ImageTk.PhotoImage(image)
 
         picture_label = tk.Label(picture_frame, image=photo)
         picture_label.image = photo
-        picture_label.pack(pady=10, expand=True)
+        picture_label.pack(side="left", fill="both", expand=True)
 
-        configurations = {'pady': 10}
-        startup_label = tk.Label(self.main_frame, text="Supercar choosing helper and analysis", font=("Helvetica", 12))
-        startup_label.pack(**configurations)
+        startup_label = tk.Label(self.main_frame,
+                                 text="Supercar choosing helper and analysis",
+                                 font=("Helvetica", 12))
+        startup_label.pack(side="top", padx=20, pady=10, expand=True)
 
-        startup_button = tk.Button(self.main_frame, text="Start", width=10, height=2, command=self.show_main_window)
-        startup_button.pack(side="top", padx=20, pady=10)
+        startup_button = tk.Button(self.main_frame, text="Start", width=10,
+                                   height=2, command=self.show_main_window)
+        startup_button.pack(side="top", padx=20, pady=10, expand=True)
 
-        quit_button = tk.Button(self.main_frame, text="Quit", width=10, height=2, command=self.quit_program)
-        quit_button.pack(side="top", padx=20, pady=10)
+        story_button = tk.Button(self.main_frame, text="Story", width=10,
+                                 height=2, command=self.show_story_window)
+        story_button.pack(side="top", padx=20, pady=10, expand=True)
+
+        quit_button = tk.Button(self.main_frame, text="Quit", width=10,
+                                height=2, command=self.quit_program)
+        quit_button.pack(side="top", padx=20, pady=10, expand=True)
+
+    def show_story_window(self):
+        pass
 
     def show_main_window(self):
+        options = {"expand": True, "fill": tk.BOTH, "padx": 10, 'pady': 10}
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self)
-        self.main_frame.pack(fill="both", expand=True)
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
 
         # Left side frame
         self.search_results_frame = SearchResultsFrame(self.main_frame, self.controller)
-        self.search_results_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
+        self.search_results_frame.pack(side=tk.LEFT, **options)
 
         # Middle frame
         self.comparison_frame = ComparisonFrame(self.main_frame, self, self.controller)
-        self.comparison_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
+        self.comparison_frame.pack(side=tk.LEFT, **options)
 
         # Right frame
         self.statistic_frame = StatisticFrame(self.main_frame, self.controller)
-        self.statistic_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
-
-        self.histogram_frame = tk.Frame(self.main_frame)
-        self.histogram_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
+        self.statistic_frame.pack(side=tk.LEFT, **options)
 
     def quit_program(self):
         self.destroy()
@@ -113,3 +121,8 @@ class SupercarUI(tk.Tk):
         ttk.Label(self.main_frame, text="Part-to-whole:").pack(side=tk.LEFT, anchor='n', **configurations)
         ttk.Button(self.main_frame, text="Back", command=self.show_main_window).pack(side=tk.TOP, anchor='ne', **configurations)
         self.controller.generate_part_to_whole()
+
+# for r in range(len(self.keynames) // columns):
+#     self.grid_rowconfigure(r, weight=1)
+# for c in range(columns):
+#     self.grid_columnconfigure(c, weight=1)

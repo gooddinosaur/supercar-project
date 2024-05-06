@@ -39,12 +39,20 @@ class SupercarModel:
         return statistics_list
 
     def get_info_for_part_to_whole(self):
-        info = {}
+        car_make_counts = {}
+        others = 0
         for entry in self.data:
             car_make = entry['Car Make']
-            info[car_make] = info.get(car_make, 0) + 1
-        return info
-
+            count = 0
+            for car in self.data:
+                if car['Car Make'] == car_make:
+                    count += 1
+            if count <= 2:
+                others += count
+            else:
+                car_make_counts[car_make] = count
+        car_make_counts['Others'] = others
+        return car_make_counts
 
     def get_info_for_statistic(self, attribute):
         data = []
@@ -101,9 +109,5 @@ class SupercarModel:
         ax = fig.add_subplot(111)
         # Create pie chart
         ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
-        ax.axis(
-            'equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-
-        # Set title
-        ax.set_title('Part-to-Whole Relationship')
+        ax.axis('equal')
         return fig

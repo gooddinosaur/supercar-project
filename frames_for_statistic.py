@@ -18,9 +18,7 @@ class DistributionFrame(tk.Frame):
         configurations = {'padx': 10, 'pady': 10}
 
         # Add combobox to select attribute
-        ttk.Label(self, text="Select Attribute:").pack(side=tk.TOP,
-                                                                  anchor='nw',
-                                                                  **configurations)
+        ttk.Label(self, text="Select Attribute:").pack(side=tk.TOP, anchor='nw',**configurations)
         attribute_combo = ttk.Combobox(self, values=num_attributes)
         attribute_combo.pack(side=tk.TOP, anchor='nw', **configurations)
 
