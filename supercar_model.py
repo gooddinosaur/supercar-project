@@ -27,6 +27,8 @@ class SupercarModel:
                 data = self.get_info_for_statistic(attribute)
                 statistics_dict = {
                     'attribute': attribute,
+                    'max': np.max(data),
+                    'min': np.min(data),
                     'mean': np.mean(data),
                     'median': np.median(data),
                     'mode': float(np.bincount(data).argmax()),
