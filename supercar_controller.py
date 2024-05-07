@@ -6,6 +6,7 @@ from tkinter import messagebox
 import matplotlib.pyplot as plt
 from tkinter import Toplevel
 
+
 class SupercarController:
     """Controller class for the calculator application."""
 
@@ -75,6 +76,58 @@ class SupercarController:
         # Retrieve data for the selected cars from the model
         car1_data = self.model.car_getter(car1)
         car2_data = self.model.car_getter(car2)
+
+        # Show result in result box
+        if car1_data['Year'] > car2_data['Year']:
+            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            self.ui.comparison_frame.result_box.year_label.config(text=f'Newer: {car_name}')
+        else:
+            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            self.ui.comparison_frame.result_box.year_label.config(text=f'Newer: {car_name}')
+
+        if car1_data['Engine Size (L)'] > car2_data['Engine Size (L)']:
+            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            self.ui.comparison_frame.result_box.engine_label.config(text=f'Larger engine size: {car_name}')
+        else:
+            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            self.ui.comparison_frame.result_box.engine_label.config(text=f'Larger engine size: {car_name}')
+
+        if car1_data['Horsepower'] > car2_data['Horsepower']:
+            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            self.ui.comparison_frame.result_box.horse_label.config(
+                text=f'More horsepower: {car_name}')
+        else:
+            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            self.ui.comparison_frame.result_box.horse_label.config(
+                text=f'More horsepower: {car_name}')
+
+        if car1_data['Torque (lb-ft)'] > car2_data['Torque (lb-ft)']:
+            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            self.ui.comparison_frame.result_box.torque_label.config(
+                text=f'More torque: {car_name}')
+        else:
+            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            self.ui.comparison_frame.result_box.torque_label.config(
+                text=f'More torque: {car_name}')
+
+        if car1_data['0-60 MPH Time (seconds)'] < car2_data['0-60 MPH Time (seconds)']:
+            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            self.ui.comparison_frame.result_box.time_label.config(
+                text=f'Better 0-60 MPH time: {car_name}')
+        else:
+            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            self.ui.comparison_frame.result_box.time_label.config(
+                text=f'Better 0-60 MPH time: {car_name}')
+
+        if car1_data['Price (in USD)'] < car2_data['Price (in USD)']:
+            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            self.ui.comparison_frame.result_box.price_label.config(
+                text=f'Cheaper: {car_name}')
+        else:
+            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            self.ui.comparison_frame.result_box.price_label.config(
+                text=f'Cheaper: {car_name}')
+
         # Extract attributes for comparison
         fig = self.model.comparison_plotter(car1_data, car2_data)
         comparison_window = tk.Tk()
@@ -91,6 +144,8 @@ class SupercarController:
 
     def clear_comparison(self):
         self.ui.comparison_frame.compare_box.delete(0, tk.END)
+        for label in self.ui.comparison_frame.result_box.winfo_children():
+            label.config(text="")
 
     def remove_selected(self):
         selected_indices = self.ui.comparison_frame.compare_box.curselection()

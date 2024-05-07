@@ -98,8 +98,8 @@ class ComparisonFrame(tk.Frame):
         # Compare results
         compare_result = tk.Label(self, text="Comparison result:", font=("Helvetica", 12))
         compare_result.pack(side=tk.TOP, anchor="w")
-        result_box = CompareResultFrame(self, self.controller)
-        result_box.pack(side=tk.TOP, anchor='w')
+        self.result_box = CompareResultFrame(self, self.controller)
+        self.result_box.pack(side=tk.TOP, anchor='w')
 
         # Back to Main Menu Button
         back_button = tk.Button(self, text="Back to Main Menu",
@@ -204,9 +204,19 @@ class CompareResultFrame(tk.Frame):
 
     def init_components(self):
         # Configurations
-        configurations = {'padx': 10, 'pady': 3}
+        configurations = {'padx': 10, 'pady': 3, 'anchor': 'w'}
         self.config(borderwidth=4, relief="groove", width=6000, height=3500)
-        for i in range(6):
-            ttk.Label(self, text='testgggggggggggggggggggggggg', font=("TkDefaultFont", 10, "underline")).pack(side=tk.TOP, **configurations)
+        self.year_label = ttk.Label(self, text='Newer:', font=("TkDefaultFont", 10))
+        self.engine_label = ttk.Label(self, text='Larger engine size:', font=("TkDefaultFont", 10))
+        self.horse_label = ttk.Label(self, text='More horsepower:', font=("TkDefaultFont", 10))
+        self.torque_label = ttk.Label(self, text='More torque:', font=("TkDefaultFont", 10))
+        self.time_label = ttk.Label(self, text='Better 0-60 MPH time:', font=("TkDefaultFont", 10))
+        self.price_label = ttk.Label(self, text='Cheaper:', font=("TkDefaultFont", 10))
 
-
+        # Pack labels
+        self.year_label.pack(side=tk.TOP, **configurations)
+        self.engine_label.pack(side=tk.TOP, **configurations)
+        self.horse_label.pack(side=tk.TOP, **configurations)
+        self.torque_label.pack(side=tk.TOP, **configurations)
+        self.time_label.pack(side=tk.TOP, **configurations)
+        self.price_label.pack(side=tk.TOP, **configurations)
