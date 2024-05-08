@@ -23,7 +23,7 @@ class SearchResultsFrame(tk.Frame):
 
         # Search box
         self.search_box = tk.Entry(self, width=45, textvariable=self.search)
-        self.search_box.grid(row=1, column=0, sticky='nw', padx=10, pady=5)
+        self.search_box.grid(row=1, column=0, sticky='nsew', padx=10, pady=5)
         self.search_box.bind("<KeyRelease>", self.on_search_key_release)
 
         # Result label
@@ -35,7 +35,7 @@ class SearchResultsFrame(tk.Frame):
                                      height=18)
         self.result_box.bind("<<ListboxSelect>>",
                              self.controller.on_car_select)
-        self.result_box.grid(row=3, column=0, sticky='nw', padx=10, pady=5)
+        self.result_box.grid(row=3, column=0, sticky='nsew', padx=10, pady=5)
 
         # Scrollbar for the result box
         scrollbar = tk.Scrollbar(self, orient="vertical",
@@ -89,22 +89,22 @@ class ComparisonFrame(tk.Frame):
                                  font=("Helvetica", 12))
         compare_lable.pack(side=tk.TOP, anchor="w")
         self.compare_box = tk.Listbox(self, font=('Arial', 12), width=40, height=2)
-        self.compare_box.pack(side=tk.TOP)
+        self.compare_box.pack(side=tk.TOP, anchor='w', fill=tk.BOTH, expand=True)
 
         # Button for interact with comparison box
         interact_buttons = InteractButton(self, self.controller)
-        interact_buttons.pack(side=tk.TOP)
+        interact_buttons.pack(side=tk.TOP, fill='y', expand=True)
 
         # Compare results
         compare_result = tk.Label(self, text="Comparison result:", font=("Helvetica", 12))
         compare_result.pack(side=tk.TOP, anchor="w")
         self.result_box = CompareResultFrame(self, self.controller)
-        self.result_box.pack(side=tk.TOP, anchor='w')
+        self.result_box.pack(side=tk.TOP, anchor='w', fill=tk.BOTH, expand=True)
 
         # Back to Main Menu Button
         back_button = tk.Button(self, text="Back to Main Menu",
                                 command=self.ui.show_startup_window)
-        back_button.pack(side=tk.BOTTOM, pady=(10, 0))
+        back_button.pack(side=tk.BOTTOM, pady=10, fill='y', expand=True)
 
     def add_to_compare(self, car):
         self.compare_box.insert(tk.END, car)
@@ -120,13 +120,13 @@ class InteractButton(tk.Frame):
         configurations = {'side': tk.LEFT, 'padx': 5, 'pady': 10, 'fill': tk.BOTH, 'expand': True}
 
         # Button for interact with comparison box
-        compare_button = tk.Button(self, text="Compare", command=self.controller.generate_comparison)
+        compare_button = tk.Button(self, text="Compare", width=10, command=self.controller.generate_comparison)
         compare_button.pack(**configurations)
 
-        clear_button = tk.Button(self, text="Clear", command=self.controller.clear_comparison)
+        clear_button = tk.Button(self, text="Clear", width=10, command=self.controller.clear_comparison)
         clear_button.pack(**configurations)
 
-        remove_button = tk.Button(self, text="Remove", command=self.controller.remove_selected)
+        remove_button = tk.Button(self, text="Remove", width=10, command=self.controller.remove_selected)
         remove_button.pack(**configurations)
 
 
@@ -138,19 +138,19 @@ class StatisticFrame(tk.Frame):
 
     def init_components(self) -> None:
         upper_frame = UpperPart(self, self.controller)
-        upper_frame.pack(side=tk.TOP)
+        upper_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         picture_frame = tk.Frame(self, width=200)
-        picture_frame.pack(side=tk.TOP)
+        picture_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         image = Image.open('Images/timeseries.png')
         image = image.resize((116, 100), Image.LANCZOS)
         photo = ImageTk.PhotoImage(image)
 
         picture_label = tk.Label(picture_frame, image=photo)
         picture_label.image = photo
-        picture_label.pack(side=tk.TOP)
-        button = tk.Button(self, text='Time series', command=self.controller.show_time_series)
-        button.pack(side=tk.TOP, padx=10, pady=10)
+        picture_label.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        button = tk.Button(self, text='Time series', width=12, command=self.controller.show_time_series)
+        button.pack(side=tk.TOP, anchor='n', padx=10, pady=10, fill='y', expand=True)
 
 
 class UpperPart(tk.Frame):
@@ -161,7 +161,13 @@ class UpperPart(tk.Frame):
         self.init_components()
 
     def init_components(self):
-        configurations = {'padx': 10, 'pady': 10}
+        # Configure row and column weights for expansion
+        for row in range(4):
+            self.grid_rowconfigure(row, weight=1)
+        for col in range(2):
+            self.grid_columnconfigure(col, weight=1)
+
+        configurations = {'padx': 5, 'pady': 5}
         pictures = [{'File Name': 'Images/descriptive statistic.png', 'row': 0,
                      'column': 0},
                     {'File Name': 'Images/distribution.png', 'row': 0,
@@ -172,7 +178,8 @@ class UpperPart(tk.Frame):
                      'column': 1}]
         for picture in pictures:
             picture_frame = tk.Frame(self, width=200)
-            picture_frame.grid(row=picture['row'], column=picture['column'])
+            picture_frame.grid(row=picture['row'], column=picture['column'],
+                               sticky="nsew")
             image = Image.open(picture['File Name'])
             image = image.resize((120, 120), Image.LANCZOS)
             photo = ImageTk.PhotoImage(image)
@@ -193,7 +200,7 @@ class UpperPart(tk.Frame):
             button = tk.Button(self, text=button_info['Name'],
                                command=button_info['command'])
             button.grid(row=button_info['row'], column=button_info['column'],
-                        **configurations)
+                        **configurations, sticky="nsew")
 
 
 class CompareResultFrame(tk.Frame):
@@ -205,13 +212,13 @@ class CompareResultFrame(tk.Frame):
     def init_components(self):
         # Configurations
         configurations = {'padx': 10, 'pady': 3, 'anchor': 'w'}
-        self.config(borderwidth=4, relief="groove", width=6000, height=3500)
-        self.year_label = ttk.Label(self, text='Newer:', font=("TkDefaultFont", 10))
-        self.engine_label = ttk.Label(self, text='Larger engine size:', font=("TkDefaultFont", 10))
-        self.horse_label = ttk.Label(self, text='More horsepower:', font=("TkDefaultFont", 10))
-        self.torque_label = ttk.Label(self, text='More torque:', font=("TkDefaultFont", 10))
-        self.time_label = ttk.Label(self, text='Better 0-60 MPH time:', font=("TkDefaultFont", 10))
-        self.price_label = ttk.Label(self, text='Cheaper:', font=("TkDefaultFont", 10))
+        self.config(borderwidth=4, relief="groove", width=600, height=350)
+        self.year_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
+        self.engine_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
+        self.horse_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
+        self.torque_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
+        self.time_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
+        self.price_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
 
         # Pack labels
         self.year_label.pack(side=tk.TOP, **configurations)
@@ -220,3 +227,4 @@ class CompareResultFrame(tk.Frame):
         self.torque_label.pack(side=tk.TOP, **configurations)
         self.time_label.pack(side=tk.TOP, **configurations)
         self.price_label.pack(side=tk.TOP, **configurations)
+

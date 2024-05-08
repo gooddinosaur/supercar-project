@@ -16,7 +16,7 @@ class SupercarUI(tk.Tk):
     def init_main_window(self):
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True)
-        self.minsize(1000, 525)
+        self.minsize(1000, 535)
         self.show_startup_window()
 
     def show_startup_window(self):
@@ -38,8 +38,8 @@ class SupercarUI(tk.Tk):
         picture_label.pack(side="left", fill="both", expand=True)
 
         startup_label = tk.Label(self.main_frame,
-                                 text="Supercar choosing helper and analysis",
-                                 font=("Helvetica", 12))
+                                 text="Supercar choosing helper\nand analysis",
+                                 font=("Helvetica", 13), wraplength=170)
         startup_label.pack(side="top", padx=20, pady=10, expand=True)
 
         startup_button = tk.Button(self.main_frame, text="Start", width=10,
@@ -54,8 +54,18 @@ class SupercarUI(tk.Tk):
                                 height=2, command=self.quit_program)
         quit_button.pack(side="top", padx=20, pady=10, expand=True)
 
+
     def show_story_window(self):
-        pass
+        # Clear previous content
+        configurations = {'padx': 10, 'pady': 10}
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+        ttk.Label(self.main_frame,
+                  text="Story telling page").grid(row=0, column=0, sticky='w', **configurations)
+        ttk.Button(self.main_frame, text="Back",
+                   command=self.show_startup_window).grid(row=0, column=4,
+                                                       sticky='e',
+                                                       **configurations)
 
     def show_main_window(self):
         options = {"expand": True, "fill": tk.BOTH, "padx": 10, 'pady': 10}
