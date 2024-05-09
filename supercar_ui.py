@@ -43,17 +43,19 @@ class SupercarUI(tk.Tk):
         startup_label.pack(side="top", padx=20, pady=10, expand=True)
 
         startup_button = tk.Button(self.main_frame, text="Start", width=10,
-                                   height=2, command=self.show_main_window)
+                                   height=2, font=("Helvetica", 11, 'bold'),
+                                   command=self.show_main_window)
         startup_button.pack(side="top", padx=20, pady=10, expand=True)
 
         story_button = tk.Button(self.main_frame, text="Story", width=10,
-                                 height=2, command=self.show_story_window)
+                                 height=2, font=("Helvetica", 11, 'bold'),
+                                 command=self.show_story_window)
         story_button.pack(side="top", padx=20, pady=10, expand=True)
 
         quit_button = tk.Button(self.main_frame, text="Quit", width=10,
-                                height=2, command=self.quit_program)
+                                height=2, font=("Helvetica", 11, 'bold'),
+                                command=self.quit_program)
         quit_button.pack(side="top", padx=20, pady=10, expand=True)
-
 
     def show_story_window(self):
         # Clear previous content

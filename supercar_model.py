@@ -138,3 +138,23 @@ class SupercarModel:
         ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
         ax.axis('equal')
         return fig
+
+    def get_info_from_year(self, year, attribute):
+        result = []
+        for car in self.data:
+            if car['Year'] == year:
+                if attribute == 'Price (in USD)':
+                    result.append(eval(car[attribute].replace(',', '')))
+                else:
+                    result.append(float(car[attribute]))
+
+        return result
+
+    def get_info_time_series(self, attribute):
+        info = {}
+        years = ['2020', '2021', '2022', '2023']
+        print(attribute)
+        for year in years:
+            car_info = self.get_info_from_year(year, attribute)
+            info[year] = np.mean(car_info)
+        return info

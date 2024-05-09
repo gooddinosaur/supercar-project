@@ -208,4 +208,25 @@ class SupercarController:
                                     pady=10, fill=tk.BOTH, expand=True)
 
     def generate_time_series(self, attribute):
-        pass
+        if not attribute:
+            messagebox.showerror("Error", "Please select attribute")
+            return
+        for widget in self.ui.main_frame.winfo_children():
+            if isinstance(widget, tk.Canvas):
+                widget.destroy()
+        data = self.model.get_info_time_series(attribute)
+        years = list(data.keys())
+        values = list(data.values())
+
+        fig, ax = plt.subplots()
+        ax.plot(years, values, marker='o')
+        ax.set_xlabel('Year')
+        ax.set_ylabel(attribute)
+        ax.set_title('Time Series of ' + attribute)
+        ax.grid(True)
+
+        canvas = FigureCanvasTkAgg(fig, master=self.ui.main_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n', padx=10,
+                                    pady=10, fill=tk.BOTH, expand=True)
+
