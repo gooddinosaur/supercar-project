@@ -87,15 +87,16 @@ class SupercarUI(tk.Tk):
         picture_label.pack()
 
         ttk.Label(self.main_frame, text="Fastest car brand is Rimac.\n"
-                                        "Average horsepower is 1914\n"
+                                        "Average horsepower is 1914 hp\n"
                                         "Average torque is 1696 lb-ft\n"
                                         "Average 0-60 MPH Time is 1.88 seconds\n"
                                         "Average price is 2,400,000 USD",
                   font=("Arial", 14)).pack(
             side=tk.TOP, anchor='nw', **configurations)
         ttk.Label(self.main_frame, text="Meanwhile, the average horsepower of "
-                                        "all supercars is 616. So, the average horsepower of Rimac is 311% higher than the average horsepower of supercars.",
-                  font=("Arial", 12), wraplength=550).pack(side=tk.TOP, anchor='nw', padx=10)
+                                        "all supercars is 616 hp. So, the average horsepower of Rimac is 311% higher than the average horsepower of supercars. "
+                                        "And that's a huge number.",
+                  font=("Arial", 12), wraplength=530).pack(side=tk.TOP, anchor='nw', padx=10)
         ttk.Label(self.main_frame, text="--------------------------------------------------------------------------------------------------------",
                   font=("Arial", 12)).pack(side=tk.TOP, anchor='w', padx=10)
 
