@@ -70,23 +70,16 @@ class SupercarModel:
     def comparison_plotter(self, car1, car2):
         attributes = ['Engine Size (L)', 'Horsepower', 'Torque (lb-ft)',
                       '0-60 MPH Time (seconds)', 'Price (in USD)']
-        if car1['Price (in USD)'] < car2['Price (in USD)']:
+        if car2['Price (in USD)'] < car1['Price (in USD)']:
             car1, car2 = car2, car1
-
         num_attributes = len(attributes)
-        attribute_indices = np.arange(num_attributes)  # Index values for the bars
-        bar_width = 0.35  # Width of the bars
-
-        # Plotting
+        attribute_indices = np.arange(num_attributes)
+        bar_width = 0.35
         fig, ax = plt.subplots(figsize=(10, 6))
-
         car1_values = [car1[attr] for attr in attributes]
         car2_values = [car2[attr] for attr in attributes]
-
         ax.bar(attribute_indices - bar_width / 2, car1_values, bar_width, label=car1['Car Make'])
         ax.bar(attribute_indices + bar_width / 2, car2_values, bar_width, label=car2['Car Make'])
-
-        # Add labels and legend
         ax.set_xlabel('Attributes')
         ax.set_ylabel('Values')
         ax.set_title('Comparison of Selected Cars')
@@ -96,12 +89,23 @@ class SupercarModel:
         return fig
 
     def distribution_histogram_plotter(self, attribute):
+        data = self.get_info_for_statistic(attribute)
         fig = Figure(figsize=(1, 4), dpi=100)
         ax = fig.add_subplot(111)
-        ax.hist(self.get_info_for_statistic(attribute), bins=10, alpha=0.7, color='blue', edgecolor='black')
+        ax.hist(data, bins=10, alpha=0.7, color='blue', edgecolor='black')
         ax.set_title(f'Distribution - Histogram of {attribute}')
         ax.set_xlabel(attribute)
         ax.set_ylabel('Frequency')
+        mean = np.mean(data)
+        sd = np.std(data)
+        ax.text(0.95, 0.95,
+                f'Mean: {mean:.2f}',
+                verticalalignment='top', horizontalalignment='right',
+                transform=ax.transAxes, fontsize=12, color='green')
+        ax.text(0.95, 0.85,
+                f'Standard Deviation: {sd:.2f}',
+                verticalalignment='top', horizontalalignment='right',
+                transform=ax.transAxes, fontsize=12, color='red')
         return fig
 
     def correlation_plotter(self, attribute1, attribute2):
@@ -153,7 +157,6 @@ class SupercarModel:
     def get_info_time_series(self, attribute):
         info = {}
         years = ['2020', '2021', '2022', '2023']
-        print(attribute)
         for year in years:
             car_info = self.get_info_from_year(year, attribute)
             info[year] = np.mean(car_info)

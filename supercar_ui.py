@@ -1,8 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, PhotoImage
 from PIL import ImageTk, Image
-from frames_for_main_window import SearchResultsFrame, ComparisonFrame, StatisticFrame
-from frames_for_statistic import DistributionFrame, CorrelationFrame, DescriptiveFrame, TimeSeriesFrame
+from frames_for_main_window import SearchResultsFrame, ComparisonFrame, \
+    StatisticFrame
+from frames_for_statistic import DistributionFrame, CorrelationFrame, \
+    DescriptiveFrame, TimeSeriesFrame
 
 
 class SupercarUI(tk.Tk):
@@ -59,15 +61,41 @@ class SupercarUI(tk.Tk):
 
     def show_story_window(self):
         # Clear previous content
-        configurations = {'padx': 10, 'pady': 10}
+        configurations = {'padx': 10, 'pady': 7}
         for widget in self.main_frame.winfo_children():
             widget.destroy()
-        ttk.Label(self.main_frame,
-                  text="Story telling page").grid(row=0, column=0, sticky='w', **configurations)
+
+        # Label and Back button
         ttk.Button(self.main_frame, text="Back",
-                   command=self.show_startup_window).grid(row=0, column=4,
-                                                       sticky='e',
-                                                       **configurations)
+                   command=self.show_startup_window).pack(side=tk.RIGHT,
+                                                          anchor='n',
+                                                          **configurations)
+        ttk.Label(self.main_frame, text="Storytelling page", font=("Arial", 15)).pack(
+            side=tk.TOP, anchor='nw', **configurations)
+
+
+        # Create picture frame and place the image
+        picture_frame = tk.Frame(self.main_frame, width=200)
+        picture_frame.pack(side=tk.LEFT, anchor='n', padx=10, pady=10)
+
+        image = Image.open('Images/jesko.jpg')
+        image = image.resize((320, 173), Image.LANCZOS)
+        photo = ImageTk.PhotoImage(image)
+
+        picture_label = tk.Label(picture_frame, image=photo)
+        picture_label.image = photo
+        picture_label.pack()
+
+        ttk.Label(self.main_frame, text="Fastest car brand is Koenigsegg.\n"
+                                        "Average horsepower is 1440\n"
+                                        "Average torque is 1060 lb-ft\n"
+                                        "Average 0-60 MPH Time is 2.3 seconds\n"
+                                        "Average price is 2,800,000 USD",
+                  font=("Arial", 14)).pack(
+            side=tk.TOP, anchor='nw', **configurations)
+        ttk.Label(self.main_frame, text="Meanwhile, the average horsepower of "
+                                        "all supercars is 616. So, the average horsepower of Koenigsegg is  234% higher than the average horsepower of supercars.",
+                  font=("Arial", 12), wraplength=550).pack(side=tk.TOP, anchor='nw', padx=10)
 
     def show_main_window(self):
         options = {"expand": True, "fill": tk.BOTH, "padx": 10, 'pady': 10}
@@ -76,11 +104,13 @@ class SupercarUI(tk.Tk):
         self.main_frame.pack(fill=tk.BOTH, expand=True)
 
         # Left side frame
-        self.search_results_frame = SearchResultsFrame(self.main_frame, self.controller)
+        self.search_results_frame = SearchResultsFrame(self.main_frame,
+                                                       self.controller)
         self.search_results_frame.pack(side=tk.LEFT, **options)
 
         # Middle frame
-        self.comparison_frame = ComparisonFrame(self.main_frame, self, self.controller)
+        self.comparison_frame = ComparisonFrame(self.main_frame, self,
+                                                self.controller)
         self.comparison_frame.pack(side=tk.LEFT, **options)
 
         # Right frame
@@ -95,12 +125,15 @@ class SupercarUI(tk.Tk):
 
     def show_descriptive_window(self, datas):
         # Clear previous content
-        configurations = {'padx': 10, 'pady': 10}
+        configurations = {'padx': 10, 'pady': 10, 'sticky': 'nsew'}
         for widget in self.main_frame.winfo_children():
             widget.destroy()
-        ttk.Label(self.main_frame, text="Descriptive Statistics of all attributes:").grid(row=0, column=0, sticky='w', **configurations)
+        ttk.Label(self.main_frame,
+                  text="Descriptive Statistics of all attributes:", font=("TkDefaultFont", 13)).grid(row=0,
+                                                                         column=0, **configurations)
         ttk.Button(self.main_frame, text="Back",
-                   command=self.show_main_window).grid(row=0, column=4, sticky='e', **configurations)
+                   command=self.show_main_window).grid(row=0, column=4,
+                                                       **configurations)
         col = 0
         r = 2
         for data in datas:
@@ -108,21 +141,23 @@ class SupercarUI(tk.Tk):
                 r += 1
                 col = 0
             frame = DescriptiveFrame(self.main_frame, data)
-            frame.grid(row=r, column=col, padx=10, pady=10)
+            frame.grid(row=r, column=col, **configurations)
             col += 1
 
     def show_distribution_window(self):
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
-        distribution_interacter = DistributionFrame(self.main_frame, self, self.controller)
+        distribution_interacter = DistributionFrame(self.main_frame, self,
+                                                    self.controller)
         distribution_interacter.pack(side=tk.LEFT, anchor='n')
 
     def show_correlation_window(self):
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
-        correlation_interacter = CorrelationFrame(self.main_frame, self, self.controller)
+        correlation_interacter = CorrelationFrame(self.main_frame, self,
+                                                  self.controller)
         correlation_interacter.pack(side=tk.LEFT, anchor='n')
 
     def show_part_to_whole_window(self):
@@ -130,8 +165,16 @@ class SupercarUI(tk.Tk):
         for widget in self.main_frame.winfo_children():
             widget.destroy()
         configurations = {'padx': 10, 'pady': 10}
-        ttk.Label(self.main_frame, text="Part-to-whole:").pack(side=tk.LEFT, anchor='n', **configurations)
-        ttk.Button(self.main_frame, text="Back", command=self.show_main_window).pack(side=tk.TOP, anchor='ne', **configurations)
+        ttk.Button(self.main_frame, text="Back",
+                   command=self.show_main_window).pack(side=tk.RIGHT,
+                                                       anchor='nw',
+                                                       **configurations)
+        ttk.Label(self.main_frame,
+                  text="The pie graph visually represents the "
+                       "proportion of cars from each brand relative to the "
+                       "total number of cars.", font=('Arial', 12)).pack(
+            side=tk.TOP, anchor='w', **configurations)
+
         self.controller.generate_part_to_whole()
 
     def show_time_series_window(self):
@@ -139,5 +182,5 @@ class SupercarUI(tk.Tk):
         for widget in self.main_frame.winfo_children():
             widget.destroy()
         time_series_interacter = TimeSeriesFrame(self.main_frame, self,
-                                                    self.controller)
+                                                 self.controller)
         time_series_interacter.pack(side=tk.LEFT, anchor='n')

@@ -19,7 +19,10 @@ class DistributionFrame(tk.Frame):
 
         # Add combobox to select attribute
         ttk.Label(self, text="Select Attribute:").pack(side=tk.TOP, anchor='nw',**configurations)
-        attribute_combo = ttk.Combobox(self, values=num_attributes)
+        attribute_combo = ttk.Combobox(self, values=['Engine Size (L)',
+                  'Horsepower', 'Torque (lb-ft)',
+                  '0-60 MPH Time (seconds)',
+                  'Price (in USD)'])
         attribute_combo.pack(side=tk.TOP, anchor='nw', **configurations)
 
         # Add button to generate distribution graph and back to main window button
@@ -68,12 +71,12 @@ class DescriptiveFrame(tk.Frame):
 
     def init_components(self):
         # Configurations
-        configurations = {'padx': 10, 'pady': 5}
+        configurations = {'padx': 10, 'pady': 3,'fill': tk.BOTH,'expand': True}
         self.config(borderwidth=4, relief="groove", width=300, height=150)
-        ttk.Label(self, text=self.data['attribute'].capitalize(), font=("TkDefaultFont", 14, "underline")).pack(side=tk.TOP, **configurations)
+        ttk.Label(self, text=self.data['attribute'].capitalize(), font=("TkDefaultFont", 13, "underline")).pack(side=tk.TOP, **configurations)
         self.data.pop('attribute')
         for keys, values in self.data.items():
-            ttk.Label(self, text=f"{keys.capitalize()}: {values}", font=("TkDefaultFont", 11)).pack(side=tk.TOP, **configurations)
+            ttk.Label(self, text=f"{keys.capitalize()}: {values:.2f}", font=("TkDefaultFont", 11)).pack(side=tk.TOP, **configurations)
 
 
 class TimeSeriesFrame(tk.Frame):
@@ -89,7 +92,10 @@ class TimeSeriesFrame(tk.Frame):
 
         # Add combobox to select attribute
         ttk.Label(self, text="Select Attribute:").pack(side=tk.TOP, anchor='nw',**configurations)
-        attribute_combo = ttk.Combobox(self, values=num_attributes)
+        attribute_combo = ttk.Combobox(self, values=[
+                  'Horsepower', 'Torque (lb-ft)',
+                  '0-60 MPH Time (seconds)',
+                  'Price (in USD)'])
         attribute_combo.pack(side=tk.TOP, anchor='nw', **configurations)
 
         # Add button to generate time series graph and back to main window button
