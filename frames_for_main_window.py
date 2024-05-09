@@ -1,24 +1,35 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 from tkinter import ttk
+from tkinter import messagebox
 
 
 class SearchResultsFrame(tk.Frame):
     def __init__(self, parent, controller, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.search = tk.StringVar()
+        self.min = tk.StringVar()
+        self.max = tk.StringVar()
+        self.selected_attribute = tk.StringVar()
         self.controller = controller
         self.init_components()
 
     def init_components(self) -> None:
         # Configure row and column weights for expansion
-        for row in range(5):
+        for row in range(8):
             self.grid_rowconfigure(row, weight=1)
         for col in range(2):
             self.grid_columnconfigure(col, weight=1)
 
+        # Attribute label and selector
+        attribute_label = tk.Label(self, text="Attribute:")
+        attribute_label.grid(row=3, column=0, sticky="w", padx=10, pady=5)
+        self.attribute_selector = tk.OptionMenu(self, self.selected_attribute, '','Year','Engine Size (L)','Horsepower','Torque (lb-ft)','0-60 MPH Time (seconds)','Price (in USD)',
+                                                command=self.on_attribute_change)
+        self.attribute_selector.grid(row=3, column=0, sticky="ew", padx=100, pady=5)
+
         # Search label
-        search_label = tk.Label(self, text="Search Box")
+        search_label = tk.Label(self, text="Search Box (Search from car name)")
         search_label.grid(row=0, column=0, sticky="w", padx=10, pady=5)
 
         # Search box
@@ -26,37 +37,80 @@ class SearchResultsFrame(tk.Frame):
         self.search_box.grid(row=1, column=0, sticky='nsew', padx=10, pady=5)
         self.search_box.bind("<KeyRelease>", self.on_search_key_release)
 
+        # Min price label and entry
+        min_price_label = tk.Label(self, text="Min:")
+        min_price_label.grid(row=4, column=0, sticky="w", padx=10, pady=5)
+        self.min_entry = tk.Entry(self, textvariable=self.min)
+        self.min_entry.grid(row=4, column=0, sticky='nsew', padx=100, pady=5)
+        self.min_entry.bind("<KeyRelease>", self.on_search_key_release)
+
+        # Max price label and entry
+        max_price_label = tk.Label(self, text="Max:")
+        max_price_label.grid(row=5, column=0, sticky="w", padx=10, pady=5)
+        self.max_entry = tk.Entry(self, textvariable=self.max)
+        self.max_entry.grid(row=5, column=0, sticky='nsew', padx=100, pady=5)
+        self.max_entry.bind("<KeyRelease>", self.on_search_key_release)
+
+        # Tool label
+        tool_label = tk.Label(self, text="Search Tool")
+        tool_label.grid(row=2, column=0, sticky="w", padx=10, pady=5)
+
         # Result label
         self.result_label = tk.Label(self, text="Result: (0 results)")
-        self.result_label.grid(row=2, column=0, sticky="nw", padx=10, pady=5)
+        self.result_label.grid(row=6, column=0, sticky="nw", padx=10, pady=5)
 
         # Result box
         self.result_box = tk.Listbox(self, font=('Arial', 12), width=30,
-                                     height=18)
+                                     height=12)
         self.result_box.bind("<<ListboxSelect>>",
                              self.controller.on_car_select)
-        self.result_box.grid(row=3, column=0, sticky='nsew', padx=10, pady=5)
+        self.result_box.grid(row=7, column=0, sticky='nsew', padx=10, pady=5)
 
         # Scrollbar for the result box
         scrollbar = tk.Scrollbar(self, orient="vertical",
                                  command=self.result_box.yview)
-        scrollbar.grid(row=3, column=1, sticky='ns', pady=5)
+        scrollbar.grid(row=7, column=1, sticky='ns', pady=5)
         self.result_box.config(yscrollcommand=scrollbar.set)
 
         # Show spec button
         self.show_spec_button = tk.Button(self, text="Show specs",
                                           command=self.controller.show_car_specs)
-        self.show_spec_button.grid(row=4, column=0, sticky="w", padx=35,
+        self.show_spec_button.grid(row=8, column=0, sticky="w", padx=35,
                                    pady=5)
         self.show_spec_button['state'] = tk.DISABLED
 
         # Add to compare list button
-        self.add_com_button = tk.Button(self, text="Add to compare list",command=self.controller.add_to_compare_list)
-        self.add_com_button.grid(row=4, column=0, padx=(80, 0), pady=5)
+        self.add_com_button = tk.Button(self, text="Add to compare list",
+                                        command=self.controller.add_to_compare_list)
+        self.add_com_button.grid(row=8, column=0, padx=(80, 0), pady=5)
         self.add_com_button['state'] = tk.DISABLED
 
     def on_search_key_release(self, event):
-        self.controller.show_search_result()
+        min_val = self.min.get()
+        max_val = self.max.get()
+        error_message = ""
+        try:
+            if min_val and float(min_val) < 0:
+                error_message = "Min value must be a positive number."
+            elif max_val and float(max_val) < 0:
+                error_message = "Max value must be a positive number."
+            elif min_val and max_val and float(min_val) > float(max_val):
+                error_message = "Min value cannot be greater than Max value."
+        except ValueError:
+            error_message = "Invalid input. Please enter a valid number."
+
+        if error_message:
+            messagebox.showerror("Error", error_message)
+            self.min.set('')
+            self.max.set('')
+        else:
+            self.controller.show_search_result()
+
+    def on_attribute_change(self, event):
+         self.min.set('')
+         self.max.set('')
+
+
 
 
 class ComparisonFrame(tk.Frame):

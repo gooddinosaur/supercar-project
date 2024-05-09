@@ -16,20 +16,33 @@ class SupercarController:
 
     def show_search_result(self):
         search_text = self.ui.search_results_frame.search.get()
-        if not search_text:
+        attribute = self.ui.search_results_frame.selected_attribute.get()
+        min = self.ui.search_results_frame.min.get()
+        max = self.ui.search_results_frame.max.get()
+        if not search_text and min == '' and max == '':
             self.ui.search_results_frame.result_box.delete(0, tk.END)
             self.ui.search_results_frame.result_label.config(
                 text=f"Results: (0 results)")
             return
-        result = self.model.get_search_result(search_text)
+        result_text = self.model.get_search_result(search_text)
+        print(result_text)
+        result_min_max = self.model.get_search_result_min_max(min, max, attribute)
+        print(result_min_max)
+        if len(result_text) == 0:
+            results = result_min_max
+        elif len(result_min_max) == 0 and min == '' and max == '':
+            results = result_text
+        else:
+            results = [car for car in result_text if car in result_min_max]
+
         self.ui.search_results_frame.result_box.delete(0, tk.END)
-        for car in result:
+        for car in results:
             self.ui.search_results_frame.result_box.insert(tk.END, f"{car['Car Make']} - {car['Car Model']}")
-        if len(result)==1:
+        if len(results) == 1:
             self.ui.search_results_frame.result_label.config(
                 text=f"Results: (1 result)")
         else:
-            self.ui.search_results_frame.result_label.config(text=f"Result: ({len(result)} results)")
+            self.ui.search_results_frame.result_label.config(text=f"Results: ({len(results)} results)")
 
     def on_car_select(self, event):
         # Get the selected car from the result box
@@ -79,52 +92,52 @@ class SupercarController:
 
         # Show result in result box
         if car1_data['Year'] > car2_data['Year']:
-            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
             self.ui.comparison_frame.result_box.year_label.config(text=f'Newer: {car_name}')
         else:
-            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            car_name = car2_data['Car Make'] + ' - ' + car2_data['Car Model']
             self.ui.comparison_frame.result_box.year_label.config(text=f'Newer: {car_name}')
 
         if car1_data['Engine Size (L)'] > car2_data['Engine Size (L)']:
-            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
             self.ui.comparison_frame.result_box.engine_label.config(text=f'Larger engine size: {car_name}')
         else:
-            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            car_name = car2_data['Car Make'] + ' - ' + car2_data['Car Model']
             self.ui.comparison_frame.result_box.engine_label.config(text=f'Larger engine size: {car_name}')
 
         if car1_data['Horsepower'] > car2_data['Horsepower']:
-            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
             self.ui.comparison_frame.result_box.horse_label.config(
                 text=f'More horsepower: {car_name}')
         else:
-            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            car_name = car2_data['Car Make'] + ' - ' + car2_data['Car Model']
             self.ui.comparison_frame.result_box.horse_label.config(
                 text=f'More horsepower: {car_name}')
 
         if car1_data['Torque (lb-ft)'] > car2_data['Torque (lb-ft)']:
-            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
             self.ui.comparison_frame.result_box.torque_label.config(
                 text=f'More torque: {car_name}')
         else:
-            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            car_name = car2_data['Car Make'] + ' - ' + car2_data['Car Model']
             self.ui.comparison_frame.result_box.torque_label.config(
                 text=f'More torque: {car_name}')
 
         if car1_data['0-60 MPH Time (seconds)'] < car2_data['0-60 MPH Time (seconds)']:
-            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
             self.ui.comparison_frame.result_box.time_label.config(
                 text=f'Better 0-60 MPH time: {car_name}')
         else:
-            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            car_name = car2_data['Car Make'] + ' - ' + car2_data['Car Model']
             self.ui.comparison_frame.result_box.time_label.config(
                 text=f'Better 0-60 MPH time: {car_name}')
 
         if car1_data['Price (in USD)'] < car2_data['Price (in USD)']:
-            car_name = car1_data['Car Make'] + '-' + car1_data['Car Model']
+            car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
             self.ui.comparison_frame.result_box.price_label.config(
                 text=f'Cheaper: {car_name}')
         else:
-            car_name = car2_data['Car Make'] + '-' + car2_data['Car Model']
+            car_name = car2_data['Car Make'] + ' - ' + car2_data['Car Model']
             self.ui.comparison_frame.result_box.price_label.config(
                 text=f'Cheaper: {car_name}')
 
@@ -132,7 +145,6 @@ class SupercarController:
         fig = self.model.comparison_plotter(car1_data, car2_data)
         comparison_window = tk.Tk()
         comparison_window.title('Comparison Graph')
-        comparison_window.geometry('800x600')
 
         # Embed the plot in the new window
         canvas = FigureCanvasTkAgg(fig, master=comparison_window)

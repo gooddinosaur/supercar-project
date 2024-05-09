@@ -9,9 +9,27 @@ class SupercarModel:
 
     def get_search_result(self, text):
         result = []
+        if not text:
+            return result
         for car in self.data:
             if text.lower() in car['Car Make'].lower() + "-" + car['Car Model'].lower():
                 result.append(car)
+        return result
+
+    def get_search_result_min_max(self, min, max, attribute):
+        result = []
+        if not attribute:
+            return result
+        for car in self.data:
+            if min != '' and max == '':
+                if float(car[attribute]) >= float(min):
+                    result.append(car)
+            if min == '' and max != '':
+                if float(car[attribute]) <= float(max):
+                    result.append(car)
+            if min != '' and max != '':
+                if float(min) < float(car[attribute]) < float(max):
+                    result.append(car)
         return result
 
     def car_getter(self, text):

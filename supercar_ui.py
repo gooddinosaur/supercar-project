@@ -78,7 +78,7 @@ class SupercarUI(tk.Tk):
         picture_frame = tk.Frame(self.main_frame, width=200)
         picture_frame.pack(side=tk.LEFT, anchor='n', padx=10, pady=10)
 
-        image = Image.open('Images/jesko.jpg')
+        image = Image.open('Images/rimac.jpg')
         image = image.resize((320, 173), Image.LANCZOS)
         photo = ImageTk.PhotoImage(image)
 
@@ -86,16 +86,19 @@ class SupercarUI(tk.Tk):
         picture_label.image = photo
         picture_label.pack()
 
-        ttk.Label(self.main_frame, text="Fastest car brand is Koenigsegg.\n"
-                                        "Average horsepower is 1440\n"
-                                        "Average torque is 1060 lb-ft\n"
-                                        "Average 0-60 MPH Time is 2.3 seconds\n"
-                                        "Average price is 2,800,000 USD",
+        ttk.Label(self.main_frame, text="Fastest car brand is Rimac.\n"
+                                        "Average horsepower is 1914\n"
+                                        "Average torque is 1696 lb-ft\n"
+                                        "Average 0-60 MPH Time is 1.88 seconds\n"
+                                        "Average price is 2,400,000 USD",
                   font=("Arial", 14)).pack(
             side=tk.TOP, anchor='nw', **configurations)
         ttk.Label(self.main_frame, text="Meanwhile, the average horsepower of "
-                                        "all supercars is 616. So, the average horsepower of Koenigsegg is  234% higher than the average horsepower of supercars.",
+                                        "all supercars is 616. So, the average horsepower of Rimac is 311% higher than the average horsepower of supercars.",
                   font=("Arial", 12), wraplength=550).pack(side=tk.TOP, anchor='nw', padx=10)
+        ttk.Label(self.main_frame, text="--------------------------------------------------------------------------------------------------------",
+                  font=("Arial", 12)).pack(side=tk.TOP, anchor='w', padx=10)
+
 
     def show_main_window(self):
         options = {"expand": True, "fill": tk.BOTH, "padx": 10, 'pady': 10}
