@@ -1,7 +1,6 @@
 import tkinter as tk
 from PIL import ImageTk, Image
-from tkinter import ttk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 
 
 class SearchResultsFrame(tk.Frame):
@@ -39,16 +38,16 @@ class SearchResultsFrame(tk.Frame):
 
         # Min price label and entry
         min_price_label = tk.Label(self, text="Min:")
-        min_price_label.grid(row=4, column=0, sticky="w", padx=10, pady=5)
+        min_price_label.grid(row=5, column=0, sticky="w", padx=10, pady=5)
         self.min_entry = tk.Entry(self, textvariable=self.min)
-        self.min_entry.grid(row=4, column=0, sticky='nsew', padx=100, pady=5)
+        self.min_entry.grid(row=5, column=0, sticky='nsew', padx=100, pady=5)
         self.min_entry.bind("<KeyRelease>", self.on_search_key_release)
 
         # Max price label and entry
         max_price_label = tk.Label(self, text="Max:")
-        max_price_label.grid(row=5, column=0, sticky="w", padx=10, pady=5)
+        max_price_label.grid(row=4, column=0, sticky="w", padx=10, pady=5)
         self.max_entry = tk.Entry(self, textvariable=self.max)
-        self.max_entry.grid(row=5, column=0, sticky='nsew', padx=100, pady=5)
+        self.max_entry.grid(row=4, column=0, sticky='nsew', padx=100, pady=5)
         self.max_entry.bind("<KeyRelease>", self.on_search_key_release)
 
         # Tool label
@@ -56,11 +55,11 @@ class SearchResultsFrame(tk.Frame):
         tool_label.grid(row=2, column=0, sticky="w", padx=10, pady=5)
 
         # Result label
-        self.result_label = tk.Label(self, text="Result: (0 results)")
+        self.result_label = tk.Label(self, text="Results: (0 results)")
         self.result_label.grid(row=6, column=0, sticky="nw", padx=10, pady=5)
 
         # Result box
-        self.result_box = tk.Listbox(self, font=('Arial', 12), width=30,
+        self.result_box = tk.Listbox(self, font=('Arial', 12), width=40,
                                      height=12)
         self.result_box.bind("<<ListboxSelect>>",
                              self.controller.on_car_select)
@@ -75,14 +74,14 @@ class SearchResultsFrame(tk.Frame):
         # Show spec button
         self.show_spec_button = tk.Button(self, text="Show specs",
                                           command=self.controller.show_car_specs)
-        self.show_spec_button.grid(row=8, column=0, sticky="w", padx=35,
+        self.show_spec_button.grid(row=8, column=0, sticky="w", padx=70,
                                    pady=5)
         self.show_spec_button['state'] = tk.DISABLED
 
         # Add to compare list button
         self.add_com_button = tk.Button(self, text="Add to compare list",
                                         command=self.controller.add_to_compare_list)
-        self.add_com_button.grid(row=8, column=0, padx=(80, 0), pady=5)
+        self.add_com_button.grid(row=8, column=0, padx=(95, 0), pady=5)
         self.add_com_button['state'] = tk.DISABLED
 
     def on_search_key_release(self, event):
@@ -155,7 +154,7 @@ class ComparisonFrame(tk.Frame):
         self.result_box.pack(side=tk.TOP, anchor='w', fill=tk.BOTH, expand=True)
 
         # Back to Main Menu Button
-        back_button = tk.Button(self, text="Back to Main Menu",
+        back_button = tk.Button(self, text="Back to Main Menu", width=20,
                                 command=self.ui.show_startup_window)
         back_button.pack(side=tk.BOTTOM, pady=10, fill='y', expand=True)
 

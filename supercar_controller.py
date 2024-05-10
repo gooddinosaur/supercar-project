@@ -25,9 +25,7 @@ class SupercarController:
                 text=f"Results: (0 results)")
             return
         result_text = self.model.get_search_result(search_text)
-        print(result_text)
         result_min_max = self.model.get_search_result_min_max(min, max, attribute)
-        print(result_min_max)
         if len(result_text) == 0:
             results = result_min_max
         elif len(result_min_max) == 0 and min == '' and max == '':
@@ -63,6 +61,7 @@ class SupercarController:
             # Create a new window to display the information about the selected car
             car_specs_window = tk.Toplevel()
             car_specs_window.title("Car Specs")
+            car_specs_window.minsize(230, 170)
             car_specs_frame = tk.Frame(car_specs_window)
             car_specs_frame.pack()
             # Display car information in labels

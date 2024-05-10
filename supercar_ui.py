@@ -18,7 +18,7 @@ class SupercarUI(tk.Tk):
     def init_main_window(self):
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True)
-        self.minsize(1000, 550)
+        self.minsize(1100, 550)
         self.show_startup_window()
 
     def show_startup_window(self):
@@ -32,7 +32,7 @@ class SupercarUI(tk.Tk):
 
         # Import and display picture
         image = Image.open("Images/startup_image.jpg")
-        image = image.resize((800, 454), Image.LANCZOS)
+        image = image.resize((883, 523), Image.LANCZOS)
         photo = ImageTk.PhotoImage(image)
 
         picture_label = tk.Label(picture_frame, image=photo)
@@ -65,12 +65,9 @@ class SupercarUI(tk.Tk):
             widget.destroy()
 
         upper_part = UpperPartStoryFrame(self.main_frame, self)
-        upper_part.pack(side=tk.TOP)
+        upper_part.pack(side=tk.TOP, anchor='w')
         bottom_part = BottomPartStoryFrame(self.main_frame)
-        bottom_part.pack(side=tk.LEFT,anchor='n')
-
-
-
+        bottom_part.pack(side=tk.LEFT, anchor='n')
 
     def show_main_window(self):
         options = {"expand": True, "fill": tk.BOTH, "padx": 10, 'pady': 10}
