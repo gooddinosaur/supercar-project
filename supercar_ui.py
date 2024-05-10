@@ -18,7 +18,7 @@ class SupercarUI(tk.Tk):
     def init_main_window(self):
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True)
-        self.minsize(1000, 535)
+        self.minsize(1000, 550)
         self.show_startup_window()
 
     def show_startup_window(self):
@@ -61,44 +61,15 @@ class SupercarUI(tk.Tk):
 
     def show_story_window(self):
         # Clear previous content
-        configurations = {'padx': 10, 'pady': 7}
         for widget in self.main_frame.winfo_children():
             widget.destroy()
 
-        # Label and Back button
-        ttk.Button(self.main_frame, text="Back",
-                   command=self.show_startup_window).pack(side=tk.RIGHT,
-                                                          anchor='n',
-                                                          **configurations)
-        ttk.Label(self.main_frame, text="Storytelling page", font=("Arial", 15)).pack(
-            side=tk.TOP, anchor='nw', **configurations)
+        upper_part = UpperPartStoryFrame(self.main_frame, self)
+        upper_part.pack(side=tk.TOP)
+        bottom_part = BottomPartStoryFrame(self.main_frame)
+        bottom_part.pack(side=tk.LEFT,anchor='n')
 
 
-        # Create picture frame and place the image
-        picture_frame = tk.Frame(self.main_frame, width=200)
-        picture_frame.pack(side=tk.LEFT, anchor='n', padx=10, pady=10)
-
-        image = Image.open('Images/rimac.jpg')
-        image = image.resize((320, 173), Image.LANCZOS)
-        photo = ImageTk.PhotoImage(image)
-
-        picture_label = tk.Label(picture_frame, image=photo)
-        picture_label.image = photo
-        picture_label.pack()
-
-        ttk.Label(self.main_frame, text="Fastest car brand is Rimac.\n"
-                                        "Average horsepower is 1914 hp\n"
-                                        "Average torque is 1696 lb-ft\n"
-                                        "Average 0-60 MPH Time is 1.88 seconds\n"
-                                        "Average price is 2,400,000 USD",
-                  font=("Arial", 14)).pack(
-            side=tk.TOP, anchor='nw', **configurations)
-        ttk.Label(self.main_frame, text="Meanwhile, the average horsepower of "
-                                        "all supercars is 616 hp. So, the average horsepower of Rimac is 311% higher than the average horsepower of supercars. "
-                                        "And that's a huge number.",
-                  font=("Arial", 12), wraplength=530).pack(side=tk.TOP, anchor='nw', padx=10)
-        ttk.Label(self.main_frame, text="--------------------------------------------------------------------------------------------------------",
-                  font=("Arial", 12)).pack(side=tk.TOP, anchor='w', padx=10)
 
 
     def show_main_window(self):
@@ -176,8 +147,8 @@ class SupercarUI(tk.Tk):
         ttk.Label(self.main_frame,
                   text="The pie graph visually represents the "
                        "proportion of cars from each brand relative to the "
-                       "total number of cars.", font=('Arial', 12)).pack(
-            side=tk.TOP, anchor='w', **configurations)
+                       "total number of cars.", font=('Arial', 13,'bold')).pack(
+            side=tk.TOP,  **configurations)
 
         self.controller.generate_part_to_whole()
 
@@ -188,3 +159,108 @@ class SupercarUI(tk.Tk):
         time_series_interacter = TimeSeriesFrame(self.main_frame, self,
                                                  self.controller)
         time_series_interacter.pack(side=tk.LEFT, anchor='n')
+
+
+class UpperPartStoryFrame(tk.Frame):
+    def __init__(self, parent, ui, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        self.ui = ui
+        self.init_components()
+
+    def init_components(self) -> None:
+        configurations = {'padx': 10, 'pady': 5}
+
+        ttk.Button(self, text="Back",
+                   command=self.ui.show_startup_window).pack(side=tk.RIGHT,
+                                                          anchor='n',
+                                                          **configurations)
+        ttk.Label(self, text="Storytelling page",
+                  font=("Arial", 15)).pack(
+            side=tk.TOP, anchor='nw', **configurations)
+
+        # Create picture frame and place the image
+        picture_frame = tk.Frame(self, width=200)
+        picture_frame.pack(side=tk.LEFT, anchor='n', padx=10, pady=10)
+
+        image = Image.open('Images/rimac.jpg')
+        image = image.resize((330, 183), Image.LANCZOS)
+        photo = ImageTk.PhotoImage(image)
+
+        picture_label = tk.Label(picture_frame, image=photo)
+        picture_label.image = photo
+        picture_label.pack()
+
+        ttk.Label(self, text="Fastest car brand is Rimac.\n"
+                                        "Average horsepower is 1914 hp\n"
+                                        "Average torque is 1696 lb-ft\n"
+                                        "Average 0-60 MPH Time is 1.88 seconds\n"
+                                        "Average price is 2,400,000 USD",
+                  font=("Arial", 14)).pack(
+            side=tk.TOP, anchor='nw', **configurations)
+        ttk.Label(self, text="Meanwhile, the average horsepower of "
+                                        "all supercars is 616 hp. So, the average horsepower of Rimac is 311% higher than the average horsepower of supercars. "
+                                        "And that's a huge number.",
+                  font=("Arial", 12), wraplength=530).pack(side=tk.TOP,
+                                                           anchor='nw',
+                                                           padx=10)
+        ttk.Label(self,
+                  text="--------------------------------------------------------------------------------------------------------",
+                  font=("Arial", 12)).pack(side=tk.TOP, anchor='w', padx=10)
+
+
+class BottomPartStoryFrame(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        self.init_components()
+
+    def init_components(self) -> None:
+        configurations = {'padx': 10, 'pady': 4}
+        ttk.Label(self, text="Interesting relationships", font=("Arial", 14)).grid(row=0,column=0, sticky='w',**configurations)
+        ttk.Label(self,
+                  text="Relationships between 0-60 MPH and Engine size",
+                  font=("Arial", 10)).grid(row=1, column=0, sticky='n', **configurations)
+        ttk.Label(self,
+                  text="Relationships between 0-60 MPH and Torque",
+                  font=("Arial", 10)).grid(row=1, column=1, sticky='n', **configurations)
+
+        # Create picture frame and place the image
+        picture_frame = tk.Frame(self, width=200)
+        picture_frame.grid(row=2, column=0, sticky='w', padx=10, pady=0)
+        image = Image.open('Images/Relationship1.png')
+        image = image.resize((276, 196), Image.LANCZOS)
+        photo = ImageTk.PhotoImage(image)
+        picture_label = tk.Label(picture_frame, image=photo)
+        picture_label.image = photo
+        picture_label.pack(side=tk.LEFT, anchor='n')
+
+        # Create picture frame and place the image
+        picture_frame = tk.Frame(self, width=200)
+        picture_frame.grid(row=2, column=1, sticky='w', padx=10, pady=0)
+        image = Image.open('Images/Relationship2.png')
+        image = image.resize((276, 196), Image.LANCZOS)
+        photo = ImageTk.PhotoImage(image)
+        picture_label = tk.Label(picture_frame, image=photo)
+        picture_label.image = photo
+        picture_label.pack(side=tk.LEFT, anchor='n')
+
+        ttk.Label(self, text="First pair",font=("Arial", 10)).grid(row=3, column=0, sticky='n',pady=0)
+        ttk.Label(self, text="Second pair", font=("Arial", 10)).grid(row=3, column=1, sticky='n', pady=0)
+
+
+
+        ttk.Label(self, text="Correlation coefficient of first pair is -0.39\n"
+                             "Correlation coefficient of second pair is -0.70\n"
+                             " \n"
+                             "Most people think that the larger engine size, the\n"
+                             "faster 0-60 MPH. But from this, it means that 0-60 MPH\n"
+                             "time depends on torque more than the engine size.\n"
+                             " \n"
+                             "So, I have done some research and found out that some\n"
+                             "smaller engine sizes can have more torque some\n"
+                             "bigger ones. Because torque depends on several\n"
+                             "factors not only engine size such as Engine Tuning,\n"
+                             "Cylinder configuration,etc."
+                             , font=("Arial", 11)).grid(row=2,column=2,sticky='n', **configurations)
+
+
+

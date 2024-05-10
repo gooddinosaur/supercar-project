@@ -111,8 +111,6 @@ class SearchResultsFrame(tk.Frame):
          self.max.set('')
 
 
-
-
 class ComparisonFrame(tk.Frame):
     def __init__(self, parent, ui, controller, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
