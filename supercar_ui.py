@@ -1,3 +1,4 @@
+"""UI for supercar project"""
 import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import ImageTk, Image
@@ -8,6 +9,8 @@ from frames_for_statistic import DistributionFrame, CorrelationFrame, \
 
 
 class SupercarUI(tk.Tk):
+    """Main UI class for the Supercar choosing helper and analysis application."""
+
     def __init__(self, controller):
         super().__init__()
         self.title("Supercar choosing helper and analysis")
@@ -17,12 +20,14 @@ class SupercarUI(tk.Tk):
         self.init_main_window()
 
     def init_main_window(self):
+        """Initialize the main window of the application."""
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True)
         self.minsize(1100, 550)
         self.show_startup_window()
 
     def show_startup_window(self):
+        """Show the startup window of the application."""
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True)
@@ -61,6 +66,8 @@ class SupercarUI(tk.Tk):
         quit_button.pack(side="top", padx=20, pady=10, expand=True)
 
     def show_story_window(self):
+        """Show the storytelling window of the application."""
+
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
@@ -71,6 +78,7 @@ class SupercarUI(tk.Tk):
         bottom_part.pack(side=tk.LEFT, anchor='n')
 
     def show_main_window(self):
+        """Show the main window of the application."""
         options = {"expand": True, "fill": tk.BOTH, "padx": 10, 'pady': 10}
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self)
@@ -91,6 +99,7 @@ class SupercarUI(tk.Tk):
         self.statistic_frame.pack(side=tk.LEFT, **options)
 
     def quit_program(self):
+        """Quit the program."""
         self.destroy()
 
     def on_close(self):
@@ -103,16 +112,20 @@ class SupercarUI(tk.Tk):
             self.destroy()
 
     def run(self):
+        """Run the application."""
         self.mainloop()
 
     def show_descriptive_window(self, datas):
+        """Show the descriptive window with statistics."""
+
         # Clear previous content
         configurations = {'padx': 10, 'pady': 10, 'sticky': 'nsew'}
         for widget in self.main_frame.winfo_children():
             widget.destroy()
         ttk.Label(self.main_frame,
-                  text="Descriptive Statistics of all attributes:", font=("TkDefaultFont", 13)).grid(row=0,
-                                                                         column=0, **configurations)
+                  text="Descriptive Statistics of all attributes:",
+                  font=("TkDefaultFont", 13)).grid(row=0,
+                                                   column=0, **configurations)
         ttk.Button(self.main_frame, text="Back",
                    command=self.show_main_window).grid(row=0, column=4,
                                                        **configurations)
@@ -127,6 +140,7 @@ class SupercarUI(tk.Tk):
             col += 1
 
     def show_distribution_window(self):
+        """Show the distribution window."""
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
@@ -135,6 +149,7 @@ class SupercarUI(tk.Tk):
         distribution_interacter.pack(side=tk.LEFT, anchor='n')
 
     def show_correlation_window(self):
+        """Show the correlation window."""
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
@@ -143,6 +158,7 @@ class SupercarUI(tk.Tk):
         correlation_interacter.pack(side=tk.LEFT, anchor='n')
 
     def show_part_to_whole_window(self):
+        """Show the part to whole window."""
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
@@ -154,12 +170,14 @@ class SupercarUI(tk.Tk):
         ttk.Label(self.main_frame,
                   text="The pie graph visually represents the "
                        "proportion of cars from each brand relative to the "
-                       "total number of cars.", font=('Arial', 13,'bold')).pack(
-            side=tk.TOP,  **configurations)
+                       "total number of cars.",
+                  font=('Arial', 13, 'bold')).pack(
+            side=tk.TOP, **configurations)
 
         self.controller.generate_part_to_whole()
 
     def show_time_series_window(self):
+        """Show the time series window."""
         # Clear previous content
         for widget in self.main_frame.winfo_children():
             widget.destroy()
@@ -169,18 +187,21 @@ class SupercarUI(tk.Tk):
 
 
 class UpperPartStoryFrame(tk.Frame):
+    """Upper part of the storytelling frame."""
+
     def __init__(self, parent, ui, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.ui = ui
         self.init_components()
 
     def init_components(self) -> None:
+        """Initialize the components of the frame."""
         configurations = {'padx': 10, 'pady': 5}
 
         ttk.Button(self, text="Back",
                    command=self.ui.show_startup_window).pack(side=tk.RIGHT,
-                                                          anchor='n',
-                                                          **configurations)
+                                                             anchor='n',
+                                                             **configurations)
         ttk.Label(self, text="Storytelling page",
                   font=("Arial", 15)).pack(
             side=tk.TOP, anchor='nw', **configurations)
@@ -198,37 +219,47 @@ class UpperPartStoryFrame(tk.Frame):
         picture_label.pack()
 
         ttk.Label(self, text="Fastest car brand is Rimac.\n"
-                                        "Average horsepower is 1914 hp\n"
-                                        "Average torque is 1696 lb-ft\n"
-                                        "Average 0-60 MPH Time is 1.88 seconds\n"
-                                        "Average price is 2,400,000 USD",
+                             "Average horsepower is 1914 hp\n"
+                             "Average torque is 1696 lb-ft\n"
+                             "Average 0-60 MPH Time is 1.88 seconds\n"
+                             "Average price is 2,400,000 USD",
                   font=("Arial", 14)).pack(
             side=tk.TOP, anchor='nw', **configurations)
         ttk.Label(self, text="Meanwhile, the average horsepower of "
-                                        "all supercars is 616 hp. So, the average horsepower of Rimac is 311% higher than the average horsepower of supercars. "
-                                        "And that's a huge number.",
+                             "all supercars is 616 hp. So, the average "
+                             "horsepower of Rimac is 311% higher than the "
+                             "average horsepower of supercars. "
+                             "And that's a huge number.",
                   font=("Arial", 12), wraplength=530).pack(side=tk.TOP,
                                                            anchor='nw',
                                                            padx=10)
         ttk.Label(self,
-                  text="--------------------------------------------------------------------------------------------------------",
+                  text="------------------------------------------------------"
+                       "--------------------------------------------------",
                   font=("Arial", 12)).pack(side=tk.TOP, anchor='w', padx=10)
 
 
 class BottomPartStoryFrame(tk.Frame):
+    """Bottom part of the storytelling frame."""
+
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.init_components()
 
     def init_components(self) -> None:
+        """Initialize the components of the frame."""
         configurations = {'padx': 10, 'pady': 4}
-        ttk.Label(self, text="Interesting relationships", font=("Arial", 14)).grid(row=0,column=0, sticky='w',**configurations)
+        ttk.Label(self, text="Interesting relationships",
+                  font=("Arial", 14)).grid(row=0, column=0, sticky='w',
+                                           **configurations)
         ttk.Label(self,
                   text="Relationships between 0-60 MPH and Engine size",
-                  font=("Arial", 10)).grid(row=1, column=0, sticky='n', **configurations)
+                  font=("Arial", 10)).grid(row=1, column=0, sticky='n',
+                                           **configurations)
         ttk.Label(self,
                   text="Relationships between 0-60 MPH and Torque",
-                  font=("Arial", 10)).grid(row=1, column=1, sticky='n', **configurations)
+                  font=("Arial", 10)).grid(row=1, column=1, sticky='n',
+                                           **configurations)
 
         # Create picture frame and place the image
         picture_frame = tk.Frame(self, width=200)
@@ -249,12 +280,14 @@ class BottomPartStoryFrame(tk.Frame):
         picture_label = tk.Label(picture_frame, image=photo)
         picture_label.image = photo
         picture_label.pack(side=tk.LEFT, anchor='n')
-
-        ttk.Label(self, text="First pair",font=("Arial", 10)).grid(row=3, column=0, sticky='n',pady=0)
-        ttk.Label(self, text="Second pair", font=("Arial", 10)).grid(row=3, column=1, sticky='n', pady=0)
-
-
-
+        ttk.Label(self, text="First pair", font=("Arial", 10)).grid(row=3,
+                                                                    column=0,
+                                                                    sticky='n',
+                                                                    pady=0)
+        ttk.Label(self, text="Second pair", font=("Arial", 10)).grid(row=3,
+                                                                     column=1,
+                                                                     sticky='n',
+                                                                     pady=0)
         ttk.Label(self, text="Correlation coefficient of first pair is -0.39\n"
                              "Correlation coefficient of second pair is -0.70\n"
                              " \n"
@@ -267,7 +300,5 @@ class BottomPartStoryFrame(tk.Frame):
                              "bigger ones. Because torque depends on several\n"
                              "factors not only engine size such as Engine Tuning,\n"
                              "Cylinder configuration,etc."
-                             , font=("Arial", 11)).grid(row=2,column=2,sticky='n', **configurations)
-
-
-
+                  , font=("Arial", 11)).grid(row=2, column=2, sticky='n',
+                                             **configurations)
