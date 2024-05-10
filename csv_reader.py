@@ -1,9 +1,10 @@
+"""File for reading csv file"""
 import csv
 import os
 
 
 class Read:
-    """Class for reading csv files"""
+    """Class for reading csv file"""
 
     def __init__(self, filename):
         self.info = []
