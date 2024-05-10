@@ -21,15 +21,30 @@ class SupercarModel:
         if not attribute:
             return result
         for car in self.data:
-            if min != '' and max == '':
-                if float(car[attribute]) >= float(min):
-                    result.append(car)
-            if min == '' and max != '':
-                if float(car[attribute]) <= float(max):
-                    result.append(car)
-            if min != '' and max != '':
-                if float(min) < float(car[attribute]) < float(max):
-                    result.append(car)
+            if attribute == 'Price (in USD)':
+                value = eval(car[attribute].replace(',', ''))
+                if min != '' and max == '':
+                    if value >= float(min):
+                        result.append(car)
+                if min == '' and max != '':
+                    if value <= float(max):
+                        result.append(car)
+                if min != '' and max != '':
+                    if float(min) < value < float(max):
+                        result.append(car)
+            else:
+                try:
+                    if min != '' and max == '':
+                        if float(car[attribute]) >= float(min):
+                            result.append(car)
+                    if min == '' and max != '':
+                        if float(car[attribute]) <= float(max):
+                            result.append(car)
+                    if min != '' and max != '':
+                        if float(min) < float(car[attribute]) < float(max):
+                            result.append(car)
+                except:
+                    pass
         return result
 
     def car_getter(self, text):
@@ -76,7 +91,7 @@ class SupercarModel:
         data = []
         for car in self.data:
             if attribute == 'Price (in USD)':
-                    value = eval(car[attribute].replace(',', ''))
+                value = eval(car[attribute].replace(',', ''))
             else:
                 try:
                     value = float(car[attribute])

@@ -109,6 +109,7 @@ class SearchResultsFrame(tk.Frame):
     def on_attribute_change(self, event):
          self.min.set('')
          self.max.set('')
+         self.controller.show_search_result()
 
 
 class ComparisonFrame(tk.Frame):
