@@ -1,23 +1,28 @@
+"""Model for supercar project"""
 import numpy as np
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
 
 class SupercarModel:
+    """Model class for the supercar project."""
 
     def __init__(self, data):
         self.data = data
 
     def get_search_result(self, text):
+        """Get search results based on user input."""
         result = []
         if not text:
             return result
         for car in self.data:
-            if text.lower() in car['Car Make'].lower() + "-" + car['Car Model'].lower():
+            if (text.lower() in car['Car Make'].lower() + "-" +
+                    car['Car Model'].lower()):
                 result.append(car)
         return result
 
     def get_search_result_min_max(self, min, max, attribute):
+        """Get search results within a given range for a specific attribute."""
         result = []
         if not attribute:
             return result
@@ -49,11 +54,13 @@ class SupercarModel:
         return result
 
     def car_getter(self, text):
+        """Get car information based on car make and model."""
         for car in self.data:
             if car['Car Make'] + " - " + car['Car Model'] == text:
                 return car
 
     def get_descriptive_statistics(self):
+        """Calculate descriptive statistics for car attributes."""
         statistics_list = []
         attributes = list(self.data[0].keys())
         for attribute in attributes:
@@ -73,6 +80,7 @@ class SupercarModel:
         return statistics_list
 
     def get_info_for_part_to_whole(self):
+        """Get information for part-to-whole relationship."""
         car_make_counts = {}
         others = 0
         for entry in self.data:
@@ -89,6 +97,7 @@ class SupercarModel:
         return car_make_counts
 
     def get_info_for_statistic(self, attribute):
+        """Get information for a specific attribute."""
         data = []
         for car in self.data:
             if attribute == 'Price (in USD)':
@@ -101,7 +110,29 @@ class SupercarModel:
             data.append(value)
         return data
 
+    def get_info_from_year(self, year, attribute):
+        """Get information for a specific attribute from a given year."""
+        result = []
+        for car in self.data:
+            if car['Year'] == year:
+                if attribute == 'Price (in USD)':
+                    result.append(eval(car[attribute].replace(',', '')))
+                else:
+                    result.append(float(car[attribute]))
+
+        return result
+
+    def get_info_time_series(self, attribute):
+        """Get time series information for a specific attribute."""
+        info = {}
+        years = ['2020', '2021', '2022', '2023']
+        for year in years:
+            car_info = self.get_info_from_year(year, attribute)
+            info[year] = np.mean(car_info)
+        return info
+
     def comparison_plotter(self, car1, car2):
+        """Generate a comparison plot between two cars."""
         attributes = ['Engine Size (L)', 'Horsepower', 'Torque (lb-ft)',
                       '0-60 MPH Time (seconds)', 'Price (in USD)']
         if car2['Price (in USD)'] < car1['Price (in USD)']:
@@ -112,8 +143,10 @@ class SupercarModel:
         fig, ax = plt.subplots(figsize=(10, 6))
         car1_values = [car1[attr] for attr in attributes]
         car2_values = [car2[attr] for attr in attributes]
-        ax.bar(attribute_indices - bar_width / 2, car1_values, bar_width, label=car1['Car Make'])
-        ax.bar(attribute_indices + bar_width / 2, car2_values, bar_width, label=car2['Car Make'])
+        ax.bar(attribute_indices - bar_width / 2, car1_values, bar_width,
+               label=car1['Car Make'])
+        ax.bar(attribute_indices + bar_width / 2, car2_values, bar_width,
+               label=car2['Car Make'])
         ax.set_xlabel('Attributes')
         ax.set_ylabel('Values')
         ax.set_title('Comparison of Selected Cars')
@@ -123,6 +156,7 @@ class SupercarModel:
         return fig
 
     def distribution_histogram_plotter(self, attribute):
+        """Generate a distribution histogram plot for an attribute."""
         data = self.get_info_for_statistic(attribute)
         fig = Figure(figsize=(1, 4), dpi=100)
         ax = fig.add_subplot(111)
@@ -143,6 +177,7 @@ class SupercarModel:
         return fig
 
     def correlation_plotter(self, attribute1, attribute2):
+        """Generate a correlation plot between two attributes."""
         data1 = self.get_info_for_statistic(attribute1)
         data2 = self.get_info_for_statistic(attribute2)
         correlation_coefficient = np.corrcoef(data1, data2)[0, 1]
@@ -166,6 +201,7 @@ class SupercarModel:
         return fig
 
     def part_to_whole_plotter(self, data):
+        """Generate a pie chart for the part-to-whole relationship."""
         labels = data.keys()
         sizes = data.values()
         # Create a new Figure
@@ -176,22 +212,3 @@ class SupercarModel:
         ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
         ax.axis('equal')
         return fig
-
-    def get_info_from_year(self, year, attribute):
-        result = []
-        for car in self.data:
-            if car['Year'] == year:
-                if attribute == 'Price (in USD)':
-                    result.append(eval(car[attribute].replace(',', '')))
-                else:
-                    result.append(float(car[attribute]))
-
-        return result
-
-    def get_info_time_series(self, attribute):
-        info = {}
-        years = ['2020', '2021', '2022', '2023']
-        for year in years:
-            car_info = self.get_info_from_year(year, attribute)
-            info[year] = np.mean(car_info)
-        return info
