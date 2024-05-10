@@ -1,10 +1,8 @@
 from supercar_ui import SupercarUI
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from tkinter import ttk
 from tkinter import messagebox
 import matplotlib.pyplot as plt
-from tkinter import Toplevel
 
 
 class SupercarController:

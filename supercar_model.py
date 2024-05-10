@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
+
 class SupercarModel:
 
     def __init__(self, data):

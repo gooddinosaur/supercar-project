@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, PhotoImage
+from tkinter import ttk, messagebox
 from PIL import ImageTk, Image
 from frames_for_main_window import SearchResultsFrame, ComparisonFrame, \
     StatisticFrame
@@ -13,6 +13,7 @@ class SupercarUI(tk.Tk):
         self.title("Supercar choosing helper and analysis")
         self.search = tk.StringVar()
         self.controller = controller
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.init_main_window()
 
     def init_main_window(self):
@@ -91,6 +92,15 @@ class SupercarUI(tk.Tk):
 
     def quit_program(self):
         self.destroy()
+
+    def on_close(self):
+        """Handle window close events."""
+        quit_ok = messagebox.askokcancel(
+            title="Confirm Quit",
+            message="Do you really want to quit?")
+        if quit_ok:
+            # exit the mainloop
+            self.destroy()
 
     def run(self):
         self.mainloop()
