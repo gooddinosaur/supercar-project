@@ -1,9 +1,12 @@
+"""All frames for showing main window"""
 import tkinter as tk
-from PIL import ImageTk, Image
 from tkinter import messagebox, ttk
+from PIL import ImageTk, Image
+
 
 
 class SearchResultsFrame(tk.Frame):
+    """ A frame for displaying search results and search tools in the main window."""
     def __init__(self, parent, controller, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.search = tk.StringVar()
@@ -14,6 +17,7 @@ class SearchResultsFrame(tk.Frame):
         self.init_components()
 
     def init_components(self) -> None:
+        """Initialize all the UI components of the frame."""
         # Configure row and column weights for expansion
         for row in range(8):
             self.grid_rowconfigure(row, weight=1)
@@ -23,9 +27,14 @@ class SearchResultsFrame(tk.Frame):
         # Attribute label and selector
         attribute_label = tk.Label(self, text="Attribute:")
         attribute_label.grid(row=3, column=0, sticky="w", padx=10, pady=5)
-        self.attribute_selector = tk.OptionMenu(self, self.selected_attribute, '','Year','Engine Size (L)','Horsepower','Torque (lb-ft)','0-60 MPH Time (seconds)','Price (in USD)',
+        self.attribute_selector = tk.OptionMenu(self, self.selected_attribute,
+                                                '', 'Year', 'Engine Size (L)',
+                                                'Horsepower', 'Torque (lb-ft)',
+                                                '0-60 MPH Time (seconds)',
+                                                'Price (in USD)',
                                                 command=self.on_attribute_change)
-        self.attribute_selector.grid(row=3, column=0, sticky="ew", padx=100, pady=5)
+        self.attribute_selector.grid(row=3, column=0, sticky="ew", padx=100,
+                                     pady=5)
 
         # Search label
         search_label = tk.Label(self, text="Search Box (Search from car name)")
@@ -85,6 +94,8 @@ class SearchResultsFrame(tk.Frame):
         self.add_com_button['state'] = tk.DISABLED
 
     def on_search_key_release(self, event):
+        """Callback function triggered when a key is released in the
+        search box or price entry fields."""
         min_val = self.min.get()
         max_val = self.max.get()
         error_message = ""
@@ -106,12 +117,14 @@ class SearchResultsFrame(tk.Frame):
             self.controller.show_search_result()
 
     def on_attribute_change(self, event):
-         self.min.set('')
-         self.max.set('')
-         self.controller.show_search_result()
+        """Callback function triggered when the selected attribute changes."""
+        self.min.set('')
+        self.max.set('')
+        self.controller.show_search_result()
 
 
 class ComparisonFrame(tk.Frame):
+    """Frame for comparing selected cars and displaying comparison results."""
     def __init__(self, parent, ui, controller, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.ui = ui
@@ -119,6 +132,7 @@ class ComparisonFrame(tk.Frame):
         self.init_components()
 
     def init_components(self) -> None:
+        """Initialize all the UI components of the frame."""
         # Logo
         picture_frame = tk.Frame(self, width=200)
         picture_frame.pack(side=tk.TOP)
@@ -140,18 +154,22 @@ class ComparisonFrame(tk.Frame):
         compare_lable = tk.Label(self, text="Comparison box",
                                  font=("Helvetica", 12))
         compare_lable.pack(side=tk.TOP, anchor="w")
-        self.compare_box = tk.Listbox(self, font=('Arial', 12), width=40, height=2)
-        self.compare_box.pack(side=tk.TOP, anchor='w', fill=tk.BOTH, expand=True)
+        self.compare_box = tk.Listbox(self, font=('Arial', 12), width=40,
+                                      height=2)
+        self.compare_box.pack(side=tk.TOP, anchor='w', fill=tk.BOTH,
+                              expand=True)
 
         # Button for interact with comparison box
         interact_buttons = InteractButton(self, self.controller)
         interact_buttons.pack(side=tk.TOP, fill='y', expand=True)
 
         # Compare results
-        compare_result = tk.Label(self, text="Comparison result:", font=("Helvetica", 12))
+        compare_result = tk.Label(self, text="Comparison result:",
+                                  font=("Helvetica", 12))
         compare_result.pack(side=tk.TOP, anchor="w")
         self.result_box = CompareResultFrame(self, self.controller)
-        self.result_box.pack(side=tk.TOP, anchor='w', fill=tk.BOTH, expand=True)
+        self.result_box.pack(side=tk.TOP, anchor='w', fill=tk.BOTH,
+                             expand=True)
 
         # Back to Main Menu Button
         back_button = tk.Button(self, text="Back to Main Menu", width=20,
@@ -159,36 +177,45 @@ class ComparisonFrame(tk.Frame):
         back_button.pack(side=tk.BOTTOM, pady=10, fill='y', expand=True)
 
     def add_to_compare(self, car):
+        """Add a car to the comparison list."""
         self.compare_box.insert(tk.END, car)
 
 
 class InteractButton(tk.Frame):
+    """Frame for interaction buttons within the comparison frame."""
     def __init__(self, parent, controller, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.controller = controller
         self.init_components()
 
     def init_components(self) -> None:
-        configurations = {'side': tk.LEFT, 'padx': 5, 'pady': 10, 'fill': tk.BOTH, 'expand': True}
+        """Initialize all the UI components of the frame."""
+        configurations = {'side': tk.LEFT, 'padx': 5, 'pady': 10,
+                          'fill': tk.BOTH, 'expand': True}
 
         # Button for interact with comparison box
-        compare_button = tk.Button(self, text="Compare", width=10, command=self.controller.generate_comparison)
+        compare_button = tk.Button(self, text="Compare", width=10,
+                                   command=self.controller.generate_comparison)
         compare_button.pack(**configurations)
 
-        clear_button = tk.Button(self, text="Clear", width=10, command=self.controller.clear_comparison)
+        clear_button = tk.Button(self, text="Clear", width=10,
+                                 command=self.controller.clear_comparison)
         clear_button.pack(**configurations)
 
-        remove_button = tk.Button(self, text="Remove", width=10, command=self.controller.remove_selected)
+        remove_button = tk.Button(self, text="Remove", width=10,
+                                  command=self.controller.remove_selected)
         remove_button.pack(**configurations)
 
 
 class StatisticFrame(tk.Frame):
+    """Frame for displaying statistical analysis options."""
     def __init__(self, parent, controller, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.controller = controller
         self.init_components()
 
     def init_components(self) -> None:
+        """Initialize all the UI components of the frame."""
         upper_frame = UpperPart(self, self.controller)
         upper_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
@@ -201,11 +228,14 @@ class StatisticFrame(tk.Frame):
         picture_label = tk.Label(picture_frame, image=photo)
         picture_label.image = photo
         picture_label.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        button = tk.Button(self, text='Time series', width=12, command=self.controller.show_time_series)
-        button.pack(side=tk.TOP, anchor='n', padx=10, pady=10, fill='y', expand=True)
+        button = tk.Button(self, text='Time series', width=12,
+                           command=self.controller.show_time_series)
+        button.pack(side=tk.TOP, anchor='n', padx=10, pady=10, fill='y',
+                    expand=True)
 
 
 class UpperPart(tk.Frame):
+    """Frame for displaying statistical analysis options."""
 
     def __init__(self, parent, controller, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
@@ -213,6 +243,7 @@ class UpperPart(tk.Frame):
         self.init_components()
 
     def init_components(self):
+        """Initialize all the UI components of the frame."""
         # Configure row and column weights for expansion
         for row in range(4):
             self.grid_rowconfigure(row, weight=1)
@@ -256,19 +287,23 @@ class UpperPart(tk.Frame):
 
 
 class CompareResultFrame(tk.Frame):
+    """Frame for displaying comparison results."""
     def __init__(self, parent, data, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.data = data
         self.init_components()
 
     def init_components(self):
+        """Initialize all the UI components of the frame."""
         # Configurations
         configurations = {'padx': 10, 'pady': 3, 'anchor': 'w'}
         self.config(borderwidth=4, relief="groove", width=600, height=350)
         self.year_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
-        self.engine_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
+        self.engine_label = ttk.Label(self, text='',
+                                      font=("TkDefaultFont", 10))
         self.horse_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
-        self.torque_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
+        self.torque_label = ttk.Label(self, text='',
+                                      font=("TkDefaultFont", 10))
         self.time_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
         self.price_label = ttk.Label(self, text='', font=("TkDefaultFont", 10))
 
@@ -279,4 +314,3 @@ class CompareResultFrame(tk.Frame):
         self.torque_label.pack(side=tk.TOP, **configurations)
         self.time_label.pack(side=tk.TOP, **configurations)
         self.price_label.pack(side=tk.TOP, **configurations)
-
