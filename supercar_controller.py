@@ -1,18 +1,21 @@
-from supercar_ui import SupercarUI
-import tkinter as tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+"""Controller for supercar project"""
 from tkinter import messagebox
+import tkinter as tk
+from supercar_ui import SupercarUI
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 
 
 class SupercarController:
-    """Controller class for the calculator application."""
+    """Controller class for the supercar choosing helper and analysis
+    application."""
 
     def __init__(self, model):
         self.ui = SupercarUI(self)
         self.model = model
 
     def show_search_result(self):
+        """Display search results based on user input."""
         search_text = self.ui.search_results_frame.search.get()
         attribute = self.ui.search_results_frame.selected_attribute.get()
         min = self.ui.search_results_frame.min.get()
@@ -20,7 +23,7 @@ class SupercarController:
         if not search_text and min == '' and max == '':
             self.ui.search_results_frame.result_box.delete(0, tk.END)
             self.ui.search_results_frame.result_label.config(
-                text=f"Results: (0 results)")
+                text="Results: (0 results)")
             return
         result_text = self.model.get_search_result(search_text)
         result_min_max = self.model.get_search_result_min_max(min, max, attribute)
@@ -33,14 +36,17 @@ class SupercarController:
 
         self.ui.search_results_frame.result_box.delete(0, tk.END)
         for car in results:
-            self.ui.search_results_frame.result_box.insert(tk.END, f"{car['Car Make']} - {car['Car Model']}")
+            self.ui.search_results_frame.result_box.insert(
+                tk.END, f"{car['Car Make']} - {car['Car Model']}")
         if len(results) == 1:
             self.ui.search_results_frame.result_label.config(
-                text=f"Results: (1 result)")
+                text="Results: (1 result)")
         else:
-            self.ui.search_results_frame.result_label.config(text=f"Results: ({len(results)} results)")
+            self.ui.search_results_frame.result_label.config(
+                text=f"Results: ({len(results)} results)")
 
     def on_car_select(self, event):
+        """Handle selection of a car from the search results."""
         # Get the selected car from the result box
         selected_index = self.ui.search_results_frame.result_box.curselection()
         if selected_index:
@@ -50,6 +56,7 @@ class SupercarController:
             self.ui.search_results_frame.add_com_button['state'] = tk.NORMAL
 
     def show_car_specs(self):
+        """Display the specifications of the selected car."""
         # Get the selected car from the result box
         selected_index = self.ui.search_results_frame.result_box.curselection()
         if selected_index:
@@ -68,6 +75,7 @@ class SupercarController:
                 label.pack()
 
     def add_to_compare_list(self):
+        """Add the selected car to the comparison list."""
         selected_index = self.ui.search_results_frame.result_box.curselection()
         if selected_index:
             if self.ui.comparison_frame.compare_box.size() == 2:
@@ -77,6 +85,7 @@ class SupercarController:
             self.ui.comparison_frame.add_to_compare(selected_car)
 
     def generate_comparison(self):
+        """Generate a comparison between two selected cars."""
         if self.ui.comparison_frame.compare_box.size() != 2:
             messagebox.showerror("Error","Please select 2 cars to continue comparing.")
             return
@@ -90,17 +99,21 @@ class SupercarController:
         # Show result in result box
         if car1_data['Year'] > car2_data['Year']:
             car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
-            self.ui.comparison_frame.result_box.year_label.config(text=f'Newer: {car_name}')
+            self.ui.comparison_frame.result_box.year_label.config(
+                text=f'Newer: {car_name}')
         else:
             car_name = car2_data['Car Make'] + ' - ' + car2_data['Car Model']
-            self.ui.comparison_frame.result_box.year_label.config(text=f'Newer: {car_name}')
+            self.ui.comparison_frame.result_box.year_label.config(
+                text=f'Newer: {car_name}')
 
         if car1_data['Engine Size (L)'] > car2_data['Engine Size (L)']:
             car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
-            self.ui.comparison_frame.result_box.engine_label.config(text=f'Larger engine size: {car_name}')
+            self.ui.comparison_frame.result_box.engine_label.config(
+                text=f'Larger engine size: {car_name}')
         else:
             car_name = car2_data['Car Make'] + ' - ' + car2_data['Car Model']
-            self.ui.comparison_frame.result_box.engine_label.config(text=f'Larger engine size: {car_name}')
+            self.ui.comparison_frame.result_box.engine_label.config(
+                text=f'Larger engine size: {car_name}')
 
         if car1_data['Horsepower'] > car2_data['Horsepower']:
             car_name = car1_data['Car Make'] + ' - ' + car1_data['Car Model']
@@ -152,31 +165,39 @@ class SupercarController:
         return
 
     def clear_comparison(self):
+        """Clear the comparison list and result labels."""
         self.ui.comparison_frame.compare_box.delete(0, tk.END)
         for label in self.ui.comparison_frame.result_box.winfo_children():
             label.config(text="")
 
     def remove_selected(self):
+        """Remove the selected car from the comparison list."""
         selected_indices = self.ui.comparison_frame.compare_box.curselection()
         self.ui.comparison_frame.compare_box.delete(selected_indices)
 
     def show_descriptive(self):
+        """Display descriptive statistics."""
         data = self.model.get_descriptive_statistics()
         self.ui.show_descriptive_window(data)
 
     def show_distribution(self):
+        """Display the distribution of selected attributes."""
         self.ui.show_distribution_window()
 
     def show_correlation(self):
+        """Display the correlation between selected attributes."""
         self.ui.show_correlation_window()
 
     def show_part_to_whole(self):
+        """Display the part-to-whole relationship."""
         self.ui.show_part_to_whole_window()
 
     def show_time_series(self):
+        """Display the time series data."""
         self.ui.show_time_series_window()
 
     def generate_distribution(self, attribute):
+        """Generate a distribution histogram for the selected attribute."""
         if not attribute:
             messagebox.showerror("Error", "Please select attribute")
             return
@@ -188,9 +209,11 @@ class SupercarController:
         # Embed histogram in frame
         canvas = FigureCanvasTkAgg(fig, master=self.ui.main_frame)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n',padx=10, pady=10, fill=tk.BOTH, expand=True)
+        canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n',padx=10,
+                                    pady=10, fill=tk.BOTH, expand=True)
 
     def generate_correlation(self, attribute1, attribute2):
+        """Generate a scatter plot for the correlation between two attributes."""
         if not attribute1 or not attribute2:
             messagebox.showerror("Error", "Please select 2 attributes")
             return
@@ -207,6 +230,7 @@ class SupercarController:
                                     pady=10, fill=tk.BOTH, expand=True)
 
     def generate_part_to_whole(self):
+        """Generate a pie chart for the part-to-whole relationship."""
         data = self.model.get_info_for_part_to_whole()
         # Pie chart
         fig = self.model.part_to_whole_plotter(data)
@@ -217,6 +241,7 @@ class SupercarController:
                                     pady=10, fill=tk.BOTH, expand=True)
 
     def generate_time_series(self, attribute):
+        """Generate a time series plot for the selected attribute."""
         if not attribute:
             messagebox.showerror("Error", "Please select attribute")
             return
@@ -238,4 +263,3 @@ class SupercarController:
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.RIGHT, anchor='n', padx=10,
                                     pady=10, fill=tk.BOTH, expand=True)
-
