@@ -23,6 +23,10 @@ By showing descriptive statistics and graphs based on user's input.
 ## How to install and run the program 💻
 ### Required python version 
 Required python version >= 3.11
+### Requirements
+- `Pillow`: Pillow is a Python library for image processing tasks like opening, manipulating, and saving various image file formats.
+- `matplotlib`: Matplotlib is a comprehensive graph plotting library for Python.
+- `numpy`: NumPy is a Python library for numerical computations, offering arrays and mathematical functions.
 ### Data
 Data download link: [Link to data source](https://www.kaggle.com/datasets/rkiattisak/sports-car-prices-dataset)
 ### Installation and run
