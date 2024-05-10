@@ -4,7 +4,6 @@ from tkinter import messagebox, ttk
 from PIL import ImageTk, Image
 
 
-
 class SearchResultsFrame(tk.Frame):
     """ A frame for displaying search results and search tools in the main window."""
     def __init__(self, parent, controller, *args, **kwargs):
