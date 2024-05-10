@@ -296,7 +296,7 @@ class BottomPartStoryFrame(tk.Frame):
                              "time depends on torque more than the engine size.\n"
                              " \n"
                              "So, I have done some research and found out that some\n"
-                             "smaller engine sizes can have more torque some\n"
+                             "smaller engine sizes can have more torque than some\n"
                              "bigger ones. Because torque depends on several\n"
                              "factors not only engine size such as Engine Tuning,\n"
                              "Cylinder configuration,etc."
