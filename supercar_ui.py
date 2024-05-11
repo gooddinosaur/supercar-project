@@ -100,7 +100,7 @@ class SupercarUI(tk.Tk):
 
     def quit_program(self):
         """Quit the program."""
-        self.destroy()
+        self.on_close()
 
     def on_close(self):
         """Handle window close events."""
