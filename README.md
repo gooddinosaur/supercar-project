@@ -53,3 +53,8 @@ python supercar_app.py
 - [Project Proposal](https://github.com/gooddinosaur/supercar-project/wiki/Project-proposal)
 - [UML and Sequence Diagrams](https://github.com/gooddinosaur/supercar-project/wiki/UML-and-Sequence-Diagrams)
 
+## Links to presentation video
+Google Drive: [Google drive link](https://drive.google.com/file/d/1_5nLHkflcibmNGsCW2OvouStGjDxk92W/view?usp=drive_link)
+
+Youtube: [YouTube link](https://www.youtube.com/watch?v=vWn4OhcUg34)
+
